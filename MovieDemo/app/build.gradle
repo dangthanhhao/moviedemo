@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
+    android.defaultConfig.vectorDrawables.useSupportLibrary = true
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
     dataBinding {
@@ -40,5 +42,13 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
-    implementation "com.google.android.material:material:1.0.0"
+    //circle image
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    // Room and Lifecycle dependencies
+    implementation "androidx.room:room-runtime:$version_room"
+    kapt "androidx.room:room-compiler:$version_room"
+    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    //loging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
 }

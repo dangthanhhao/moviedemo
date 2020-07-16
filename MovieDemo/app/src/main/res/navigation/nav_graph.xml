@@ -3,11 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/blankFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/blankFragment"
+        android:id="@+id/homeFragment"
         android:name="com.example.moviedemo.BlankFragment"
         android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" />
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.moviedemo.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.moviedemo.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/favFragment"
+        android:name="com.example.moviedemo.FavFragment"
+        android:label="fragment_fav"
+        tools:layout="@layout/fragment_fav" />
 </navigation>
