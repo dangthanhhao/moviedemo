@@ -1,24 +1,21 @@
-package com.example.moviedemo
+package com.example.moviedemo.screen.activities.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.example.moviedemo.screen.activities.profile.ProfileActivity
+import com.example.moviedemo.R
 import com.example.moviedemo.databinding.ActivityMainBinding
 import com.example.moviedemo.repository.local.Database
-import com.example.moviedemo.repository.local.UserModel
-import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +23,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
+            R.layout.activity_main
+        )
         drawerLayout = binding.drawerLayout
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.myNavHostFragment)
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val t=Intent(this,ProfileActivity::class.java)
+        val t=Intent(this, ProfileActivity::class.java)
         startActivity(t)
         return super.onOptionsItemSelected(item)
     }
