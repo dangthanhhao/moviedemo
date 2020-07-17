@@ -26,13 +26,13 @@ abstract class Database : RoomDatabase(){
 
     companion object{
         private var INSTANCE:Database?= null
-        fun getInstace(context: Context): Database{
+        fun getInstance(context: Context): Database{
             synchronized(this){
                 var instance= INSTANCE
                 if(instance==null){
                     instance= Room.databaseBuilder(context.applicationContext,Database::class.java,"User database")
                         .fallbackToDestructiveMigration()
-                        .allowMainThreadQueries()
+//                        .allowMainThreadQueries()
                         .build()
                     INSTANCE=instance
                 }

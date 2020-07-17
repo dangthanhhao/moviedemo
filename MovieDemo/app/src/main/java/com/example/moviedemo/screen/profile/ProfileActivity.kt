@@ -1,4 +1,4 @@
-package com.example.moviedemo.screen.activities.profile
+package com.example.moviedemo.screen.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,6 +26,8 @@ class ProfileActivity : AppCompatActivity() {
             }
             rad2.isChecked=true
         }
+
+
     }
 
 

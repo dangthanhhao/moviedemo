@@ -5,12 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     >
-
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.moviedemo.screen.main.MainViewModel" />
+    </data>
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
+        tools:openDrawer="start"
         >
 
 
@@ -83,12 +88,13 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="John Marker"
+                    android:text="@{viewModel.userProfile.name}"
                     android:textColor="#000000"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -102,17 +108,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:text="1970-01-01"
+                    android:text="@{viewModel.userDateOfBirthString}"
                     android:textColor="#000000"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toTopOf="@+id/imageView" />
+                    app:layout_constraintTop_toTopOf="@+id/imageView"
+
+                    />
 
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="joinmarker@gmail.com"
+                    android:text="@{viewModel.userProfile.email}"
                     android:textColor="#000000"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                     app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -123,7 +131,7 @@
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Male"
+                    android:text="@{viewModel.userGenderString}"
                     android:textColor="#000000"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                     app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -160,7 +168,7 @@
                     app:srcCompat="@drawable/ic_person_black_24dp" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/button_edit_profile"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -182,7 +190,7 @@
                     android:textColor="#000000"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button" />
+                    app:layout_constraintTop_toBottomOf="@+id/button_edit_profile" />
 
 
                 <Button
@@ -193,7 +201,9 @@
                     android:text="Show all"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+                    android:onClick="@{()->viewModel.change()}"
+                    />
 
                 <TextView
                     android:id="@+id/textView9"
@@ -213,7 +223,10 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView6"
+                    tools:listitem="@layout/list_reminder_drawer"
+                    tools:itemCount="3"
+                    />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

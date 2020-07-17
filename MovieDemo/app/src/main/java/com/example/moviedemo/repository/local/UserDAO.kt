@@ -1,11 +1,9 @@
 package com.example.moviedemo.repository.local
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
+const val CURRENT_USER_ID=1L
 @Dao
 interface UserDao{
     @Insert
@@ -16,4 +14,9 @@ interface UserDao{
     fun get(userID: Long):LiveData<UserModel>
     @Query("SELECT * FROM usermodel")
     fun getALL():LiveData<List<UserModel>>
+
+}
+//custom extention DAO
+fun UserDao.getCurrentUser():LiveData<UserModel>{
+    return get(CURRENT_USER_ID)
 }

@@ -1,4 +1,4 @@
-package com.example.moviedemo.screen.activities.main
+package com.example.moviedemo.screen.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,14 +8,17 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.example.moviedemo.screen.activities.profile.ProfileActivity
+import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.ActivityMainBinding
+import com.example.moviedemo.repository.Repository
 import com.example.moviedemo.repository.local.Database
+import com.example.moviedemo.repository.local.getCurrentUser
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
@@ -26,17 +29,30 @@ class MainActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
             R.layout.activity_main
         )
+        binding.setLifecycleOwner(this)
+        //set up Drawer and bottom nav
         drawerLayout = binding.drawerLayout
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.myNavHostFragment)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
-
         binding.bottomNav.setupWithNavController(navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
+        //set click listener
+        binding.buttonEditProfile.setOnClickListener {
+            val t=Intent(this, ProfileActivity::class.java)
+            startActivity(t)
+        }
+        // create viewmodel
+
+        val viewModelFactory=MainViewModelFactory(application)
+        val viewModel=ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+
+        binding.viewModel=viewModel
 
 
-        test()
+
+//        test()
 
 //        var badge = binding.bottomNav.getOrCreateBadge(R.id.favFragment)
 //        badge.isVisible = true
@@ -54,10 +70,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun test() {
-        val dao = Database.getInstace(this).UserDao
+        val dao = Database.getInstance(this).UserDao
         //dao.insert(UserModel())
         //Timber.i("Create user")
-        val user=dao.get(1L)
+        val user=dao.getCurrentUser()
 //        Timber.i(user.value.toString())
         user.observe(this, Observer {
             it?.let {
@@ -75,9 +91,9 @@ class MainActivity : AppCompatActivity() {
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val t=Intent(this, ProfileActivity::class.java)
-        startActivity(t)
+
         return super.onOptionsItemSelected(item)
     }
 }
