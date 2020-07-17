@@ -24,7 +24,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application){
     }
 
     fun change(){
-        userProfile.value?.email  = "aszqsc@gmail.com"
+        userProfile.value?.email  = "aszqs2c@gmail.com"
         userProfile.value?.let { repository.updateUserProfile(user = it) }
     }
 }

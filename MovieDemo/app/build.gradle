@@ -55,10 +55,13 @@ dependencies {
     //loging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    // Because RxAndroid releases are few and far between, it is recommended you also
-    // explicitly depend on RxJava's latest version for bug fixes and new features.
-    // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
 
+    //Rxjava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+    // RxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    //rxjava for ROOM DB
+    implementation "androidx.room:room-rxjava2:$version_room"
+    //stream to intergate rxjava with live data on ROOM DB
+    implementation "androidx.lifecycle:lifecycle-reactivestreams:$version_lifecycle_extensions"
 }

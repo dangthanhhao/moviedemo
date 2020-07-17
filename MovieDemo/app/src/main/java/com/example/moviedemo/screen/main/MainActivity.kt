@@ -69,21 +69,7 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
-    private fun test() {
-        val dao = Database.getInstance(this).UserDao
-        //dao.insert(UserModel())
-        //Timber.i("Create user")
-        val user=dao.getCurrentUser()
-//        Timber.i(user.value.toString())
-        user.observe(this, Observer {
-            it?.let {
-                Timber.i(it.toString())
-                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
-            }
 
-        })
-
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.myNavHostFragment)
