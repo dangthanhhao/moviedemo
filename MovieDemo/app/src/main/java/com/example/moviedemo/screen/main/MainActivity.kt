@@ -4,10 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,10 +14,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.ActivityMainBinding
-import com.example.moviedemo.repository.Repository
-import com.example.moviedemo.repository.local.Database
-import com.example.moviedemo.repository.local.getCurrentUser
-import timber.log.Timber
+import com.example.moviedemo.screen.UserProfileViewModel
+import com.example.moviedemo.screen.UserProfileViewModelFactory
+import com.example.moviedemo.util.ReadFilePermisnion
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -29,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
             R.layout.activity_main
         )
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         //set up Drawer and bottom nav
         drawerLayout = binding.drawerLayout
         setSupportActionBar(binding.toolbar)
@@ -45,12 +42,13 @@ class MainActivity : AppCompatActivity() {
         }
         // create viewmodel
 
-        val viewModelFactory=MainViewModelFactory(application)
-        val viewModel=ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        val viewModelFactory=
+            UserProfileViewModelFactory(application)
+        val viewModel=ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
 
         binding.viewModel=viewModel
 
-
+        ReadFilePermisnion.verifyStoragePermissions(this)
 
 //        test()
 

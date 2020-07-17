@@ -3,10 +3,7 @@ package com.example.moviedemo.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
-import com.example.moviedemo.repository.local.Database
-import com.example.moviedemo.repository.local.UserDao
-import com.example.moviedemo.repository.local.UserModel
-import com.example.moviedemo.repository.local.getCurrentUser
+import com.example.moviedemo.repository.local.*
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -20,6 +17,9 @@ class Repository(val context: Context){
     }
 
     fun getUserProfile(): LiveData<UserModel>{
+//        userDAO.checkCurrentUser().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).oner
+
+
         return LiveDataReactiveStreams.fromPublisher(userDAO.getCurrentUser()
             .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()))
     }

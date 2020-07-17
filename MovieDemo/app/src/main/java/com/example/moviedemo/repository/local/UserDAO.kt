@@ -18,8 +18,17 @@ interface UserDao{
     @Query("SELECT * FROM usermodel")
     fun getALL():LiveData<List<UserModel>>
 
+
+    @Query("SELECT * FROM usermodel WHERE userID=:userID LIMIT 1")
+    fun checkUserID(userID: Long) :Single<UserModel>
+
 }
 //custom extention DAO
 fun UserDao.getCurrentUser():Flowable<UserModel>{
     return get(CURRENT_USER_ID)
+}
+
+//custom extention DAO
+fun UserDao.checkCurrentUser():Single<UserModel>{
+    return checkUserID(CURRENT_USER_ID)
 }
