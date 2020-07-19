@@ -6,10 +6,12 @@
     android:fitsSystemWindows="true"
     tools:context=".screen.main.fragments.movie.BlankFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginLeft="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragment Home" />
+        android:layout_height="wrap_content"
+        tools:itemCount="5"
+        tools:listitem="@layout/list_popular_movie" />
 
 </FrameLayout>

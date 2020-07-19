@@ -54,8 +54,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     //loging
     implementation 'com.jakewharton.timber:timber:4.7.1'
-
-
     //Rxjava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
     // RxAndroid
@@ -64,4 +62,11 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$version_room"
     //stream to intergate rxjava with live data on ROOM DB
     implementation "androidx.lifecycle:lifecycle-reactivestreams:$version_lifecycle_extensions"
+    //convert gson
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    //retrofit and  adapter
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
+//glide
+    implementation "com.github.bumptech.glide:glide:$version_glide"
 }

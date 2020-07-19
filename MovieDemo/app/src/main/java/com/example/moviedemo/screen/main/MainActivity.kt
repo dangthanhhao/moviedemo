@@ -1,5 +1,6 @@
 package com.example.moviedemo.screen.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,9 +22,14 @@ import com.example.moviedemo.screen.UserProfileViewModelFactory
 import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.util.ReadFilePermisnion
 import io.reactivex.Maybe
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         //set up Drawer and bottom nav
         drawerLayout = binding.drawerLayout
         setSupportActionBar(binding.toolbar)
+
         val navController = findNavController(R.id.myNavHostFragment)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         binding.bottomNav.setupWithNavController(navController)
@@ -56,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         ReadFilePermisnion.verifyStoragePermissions(this)
 
-//        test()
+        test()
 
 //        var badge = binding.bottomNav.getOrCreateBadge(R.id.favFragment)
 //        badge.isVisible = true
@@ -73,8 +80,24 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
+    @SuppressLint("CheckResult")
     private fun test() {
         Timber.i("Begib test")
+        var movies=Repository(this).getPopularMovie()
+
+            movies.observeOn(AndroidSchedulers.mainThread()).timeout(3,TimeUnit.SECONDS).onErrorReturn {
+                it.printStackTrace()
+                return@onErrorReturn null
+            }
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+            Timber.i("Got ${it.toString()}")
+        },{
+            it.printStackTrace()
+        },{
+            Timber.i("Complete")
+        })
+
 
 
 
