@@ -1,9 +1,10 @@
 package com.example.moviedemo.screen.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
@@ -11,17 +12,25 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.ActivityMainBinding
+import com.example.moviedemo.repository.Repository
+import com.example.moviedemo.repository.local.UserModel
 import com.example.moviedemo.screen.UserProfileViewModel
 import com.example.moviedemo.screen.UserProfileViewModelFactory
+import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.util.ReadFilePermisnion
+import io.reactivex.Maybe
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
+import timber.log.Timber
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("Main activity","Test")
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
             R.layout.activity_main
@@ -50,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
         ReadFilePermisnion.verifyStoragePermissions(this)
 
-//        test()
+        test()
 
 //        var badge = binding.bottomNav.getOrCreateBadge(R.id.favFragment)
 //        badge.isVisible = true
@@ -67,6 +76,12 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
+    private fun test() {
+        Timber.i("Begib test")
+
+
+
+    }
 
 
     override fun onSupportNavigateUp(): Boolean {
