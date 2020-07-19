@@ -143,7 +143,7 @@
         </RadioGroup>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_cancel_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -158,11 +158,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Done"
-            app:layout_constraintBottom_toBottomOf="@+id/button2"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_cancel_update"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button2"
-            app:layout_constraintTop_toTopOf="@+id/button2"
+            app:layout_constraintStart_toEndOf="@+id/btn_cancel_update"
+            app:layout_constraintTop_toTopOf="@+id/btn_cancel_update"
             android:onClick="onUpdateProfile"
             />
 

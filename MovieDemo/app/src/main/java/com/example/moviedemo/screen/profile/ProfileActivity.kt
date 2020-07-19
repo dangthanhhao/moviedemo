@@ -39,15 +39,14 @@ class ProfileActivity : AppCompatActivity() {
         val binding=DataBindingUtil.setContentView<ActivityProfileBinding>(this,R.layout.activity_profile)
         binding.lifecycleOwner=this
 
-        val viewModelFactory=
-            UserProfileViewModelFactory(application)
+        val viewModelFactory=UserProfileViewModelFactory(application)
         viewModel=ViewModelProviders.of(this,viewModelFactory).get(UserProfileViewModel::class.java)
 
         binding.viewModel= viewModel
 
 
         setUpRadioButton(binding.radioButton1,binding.radioButton2)
-
+        binding.btnCancelUpdate.setOnClickListener { finish() }
 
         viewModel.userProfile.observe(this,
             androidx.lifecycle.Observer {
@@ -134,7 +133,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     fun bindAvatarProfileFirstTime(imageView: ImageView, path: String?){
-
         if (!imageBindFirstTime) return
         Timber.i("Load $path")
         path?.let {
