@@ -50,16 +50,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(t)
         }
         // create viewmodel
-
-        val viewModelFactory=
-            UserProfileViewModelFactory(application)
+        val viewModelFactory= UserProfileViewModelFactory(application)
         val viewModel=ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
-
         binding.viewModel=viewModel
 
         ReadFilePermisnion.verifyStoragePermissions(this)
 
-        test()
+//        test()
 
 //        var badge = binding.bottomNav.getOrCreateBadge(R.id.favFragment)
 //        badge.isVisible = true

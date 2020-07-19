@@ -19,7 +19,6 @@ class Repository(val context: Context) {
     }
 
     fun getUserProfile(): LiveData<UserModel> {
-        Timber.i("Load userprofile")
         //An action check if current user is created in DB. If not, create (insert) a row and then return the row (current user)
         val action = userDAO.checkCurrentUser()
             .switchIfEmpty(Maybe.just(UserModel())).flatMapCompletable {
@@ -38,13 +37,6 @@ class Repository(val context: Context) {
         )
     }
 
-    fun getUserProfile2(): LiveData<UserModel> {
-        return LiveDataReactiveStreams.fromPublisher(
-            userDAO.getCurrentUser()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-        )
-    }
 
     fun updateUserProfile(user: UserModel) {
         userDAO.update(user).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
