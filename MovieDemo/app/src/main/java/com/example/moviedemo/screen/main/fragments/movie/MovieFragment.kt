@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.FragmentMovieBinding
+import com.example.moviedemo.repository.network.Movie
 import com.example.moviedemo.util.EndlessRecyclerViewScrollListener
 import timber.log.Timber
 
@@ -47,8 +48,10 @@ class BlankFragment : Fragment() {
 
 
        viewModel.movies.observe(this, Observer {
-           Timber.i("Got $it")
-           apdater.submitList(it)
+    Timber.i("ASDASD")
+           apdater.submitList(it.toList())
+
+           binding.executePendingBindings()
        })
 
         val scrollListener = object : EndlessRecyclerViewScrollListener(binding.listPopular.layoutManager as LinearLayoutManager) {
@@ -60,7 +63,7 @@ class BlankFragment : Fragment() {
             }
         }
 
-        //binding.listPopular.addOnScrollListener(scrollListener)
+        binding.listPopular.addOnScrollListener(scrollListener)
         // Inflate the layout for this fragment
         return binding.root
     }

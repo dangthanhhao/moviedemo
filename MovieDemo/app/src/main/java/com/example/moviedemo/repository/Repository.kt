@@ -55,7 +55,8 @@ class Repository(val context: Context) {
 
 
     companion object{
-        fun getUrLImage(relativeURL :String): String {
+        fun getUrLImage(relativeURL :String?): String {
+            if (relativeURL.isNullOrEmpty()) return ""
             return BASE_IMAGE_URL+relativeURL.substring(1)
         }
     }

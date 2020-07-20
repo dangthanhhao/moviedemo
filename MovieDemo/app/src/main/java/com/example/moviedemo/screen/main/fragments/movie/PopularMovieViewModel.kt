@@ -2,8 +2,10 @@ package com.example.moviedemo.screen.main.fragments.movie
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.view.animation.Transformation
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.moviedemo.repository.Repository
 import com.example.moviedemo.repository.network.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,9 +15,11 @@ import java.util.concurrent.TimeUnit
 
 class PopularMovieViewModel(application: Application) : AndroidViewModel(application) {
     private var repository = Repository(application)
-    val movies = MutableLiveData<List<Movie>>()
+    val movies = MutableLiveData<MutableList<Movie>>()
+
 
     init {
+        movies.value= mutableListOf()
         getMovies()
     }
 
@@ -32,8 +36,9 @@ class PopularMovieViewModel(application: Application) : AndroidViewModel(applica
             .subscribe({
                 if(it.movies.isNotEmpty()){
 
-                        movies.value=it.movies
+                        movies.value!!.addAll(it.movies)
 
+                        movies.postValue(movies.value)
                 }
 
             }, {
