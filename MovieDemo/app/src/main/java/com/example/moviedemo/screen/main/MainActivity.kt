@@ -82,21 +82,21 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("CheckResult")
     private fun test() {
-        Timber.i("Begib test")
-        var movies=Repository(this).getPopularMovie()
-
-            movies.observeOn(AndroidSchedulers.mainThread()).timeout(3,TimeUnit.SECONDS).onErrorReturn {
-                it.printStackTrace()
-                return@onErrorReturn null
-            }
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-            Timber.i("Got ${it.toString()}")
-        },{
-            it.printStackTrace()
-        },{
-            Timber.i("Complete")
-        })
+//        Timber.i("Begib test")
+//        var movies=Repository(this).getPopularMovie()
+//
+//            movies.observeOn(AndroidSchedulers.mainThread()).timeout(3,TimeUnit.SECONDS).onErrorReturn {
+//                it.printStackTrace()
+//                return@onErrorReturn null
+//            }
+//            .subscribeOn(Schedulers.io())
+//            .subscribe({
+//            Timber.i("Got ${it.toString()}")
+//        },{
+//            it.printStackTrace()
+//        },{
+//            Timber.i("Complete")
+//        })
 
 
 

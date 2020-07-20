@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveDataReactiveStreams
 
 
 import com.example.moviedemo.repository.local.*
+import com.example.moviedemo.repository.network.BASE_IMAGE_URL
 
 import com.example.moviedemo.repository.network.MovieApi
 import com.example.moviedemo.repository.network.PopularMoviesResponse
@@ -48,8 +49,15 @@ class Repository(val context: Context) {
             .subscribe()
     }
 
-    fun getPopularMovie(): Observable<PopularMoviesResponse> {
-        return movieApi.getPopularMovies()
+    fun getPopularMovie(page:Int=1): Observable<PopularMoviesResponse> {
+        return movieApi.getPopularMovies(page = page)
+    }
+
+
+    companion object{
+        fun getUrLImage(relativeURL :String): String {
+            return BASE_IMAGE_URL+relativeURL.substring(1)
+        }
     }
 
 }

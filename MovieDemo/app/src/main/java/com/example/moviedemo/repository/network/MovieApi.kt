@@ -11,7 +11,7 @@ import retrofit2.http.Query
 
 const val BASE_URL = "https://api.themoviedb.org/3/"
 const val API_KEY = "0267c13d8c7d1dcddb40001ba6372235"
-
+public const val BASE_IMAGE_URL="https://image.tmdb.org/t/p/w185/"
 
 private val retrofit = Retrofit.Builder()
     .client(OkHttpClient())
