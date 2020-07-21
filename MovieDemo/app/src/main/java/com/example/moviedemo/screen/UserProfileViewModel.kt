@@ -6,8 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.moviedemo.repository.Repository
 import com.example.moviedemo.repository.local.UserModel
-import timber.log.Timber
-import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,10 +19,6 @@ class UserProfileViewModel (application: Application) : AndroidViewModel(applica
     }
     val userGenderString= Transformations.map(userProfile){
          if (it.gender) "Male" else "Female"
-    }
-
-    fun change(){
-
     }
 
     fun updateUserProfile(avatarUriStr:String?){

@@ -99,6 +99,7 @@ class PopularMovieListAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>
                 notifyItemInserted(super.getItemCount())
         } else if (hasExtraRow && preState != newNetworkState) {
             notifyItemChanged(itemCount - 1)
+
         }
     }
 }

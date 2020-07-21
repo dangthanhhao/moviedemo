@@ -8,14 +8,11 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.moviedemo.repository.Repository
-import timber.log.Timber
 import java.io.File
-
 
 
 @BindingAdapter("bindAvatarProfile")
 fun bindAvatarProfile(imageView: ImageView, path: String?){
-    Timber.i("Load $path")
     path?.let {
         val imgFile= File(path)
         if (imgFile.exists()){

@@ -1,52 +1,27 @@
 package com.example.moviedemo.screen.main.fragments.popularmovie
 
-import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.example.moviedemo.repository.Repository
-import com.example.moviedemo.repository.network.Movie
-import com.example.moviedemo.repository.network.NetworkState
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
+import com.example.moviedemo.repository.network.PopularMovieDataSourceFactory
 
 class PopularMovieViewModel(application: Application) : AndroidViewModel(application) {
     val repository by lazy { Repository(application) }
 
-    val movies =   MutableLiveData<MutableList<Movie>>()
 
-    val networkState=MutableLiveData<NetworkState>()
+    val listFactory = PopularMovieDataSourceFactory(repository)
+    val config = PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setPageSize(20)
+        .build()
+    val moviePagedList = LivePagedListBuilder(listFactory, config).build()
+
+
     init {
-        movies.value= mutableListOf()
-        networkState.postValue(NetworkState.RUNING)
-        getMovies()
+
     }
 
-    @SuppressLint("CheckResult")
-    public fun getMovies(page : Int=1) {
-
-        repository.getPopularMovie(page)
-            .observeOn(AndroidSchedulers.mainThread()).
-            timeout(3, TimeUnit.SECONDS)
-            .onErrorReturn {
-                it.printStackTrace()
-                return@onErrorReturn null
-            }
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                if(it.movies.isNotEmpty()){
-                        movies.value!!.addAll(it.movies)
-                        movies.postValue(movies.value)
-                    networkState.postValue(NetworkState.LOADED)
-                }
-
-            }, {
-                it.printStackTrace()
-            }, {
-                Timber.i("Complete")
-            })
-    }
 
 }

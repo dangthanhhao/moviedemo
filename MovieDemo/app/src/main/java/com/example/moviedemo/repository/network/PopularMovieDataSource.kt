@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.example.moviedemo.repository.Repository
+import timber.log.Timber
 
 class PopularMovieDataSource(val repository: Repository) : PageKeyedDataSource<Int, Movie>() {
 
@@ -17,6 +18,7 @@ class PopularMovieDataSource(val repository: Repository) : PageKeyedDataSource<I
     ) {
         networkState.postValue(NetworkState.RUNING)
         repository.getPopularMovie().subscribe({
+            Timber.i("Load first time")
             callback.onResult(it.movies, null, page + 1)
             networkState.postValue(NetworkState.LOADED)
         }, {
@@ -33,6 +35,7 @@ class PopularMovieDataSource(val repository: Repository) : PageKeyedDataSource<I
             if (it.total_pages >= params.key) {
                 callback.onResult(it.movies, params.key + 1)
                 networkState.postValue(NetworkState.LOADED)
+                Timber.i("Load more! $")
             } else {
                 networkState.postValue(NetworkState.NO_MORE_ROW)
             }
