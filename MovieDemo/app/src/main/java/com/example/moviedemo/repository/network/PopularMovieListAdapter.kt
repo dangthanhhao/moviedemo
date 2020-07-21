@@ -7,21 +7,36 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviedemo.R
+import com.example.moviedemo.databinding.GridPopularMovieItemBinding
 
 import com.example.moviedemo.databinding.ListPopularMovieItemBinding
-
-class PopularMovieListAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>(diffCallback) {
+enum class RecycleViewType{
+    LIST,
+    GRID
+}
+class PopularMovieListAdapter(val recycleViewType: RecycleViewType=RecycleViewType.LIST) : PagedListAdapter<Movie, RecyclerView.ViewHolder>(diffCallback) {
     val MOVIE_TYPE = 1
     val NETWORK_TYPE = 2
     private var networkState: NetworkState? = null
 
     //viewholders
-    class PagedPopularMovieViewHolder(private var binding: ListPopularMovieItemBinding) :
+    class PagedPopularMovieViewHolderList(private var binding: ListPopularMovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie?) {
             movie?.let {
                 binding.movie = movie
                 binding.edittextRating.setText(movie.vote_average.toString() + "/10")
+                binding.executePendingBindings()
+            }
+
+        }
+    }
+
+    class PagedPopularMovieViewHolderGrid(private var binding: GridPopularMovieItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(movie: Movie?) {
+            movie?.let {
+                binding.movie = movie
                 binding.executePendingBindings()
             }
 
@@ -46,14 +61,19 @@ class PopularMovieListAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == MOVIE_TYPE)
-            return PagedPopularMovieViewHolder(
-                ListPopularMovieItemBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
+        if (viewType == MOVIE_TYPE){
+            if(recycleViewType==RecycleViewType.LIST)
+                return PagedPopularMovieViewHolderList(
+                    ListPopularMovieItemBinding.inflate(
+                        LayoutInflater.from(
+                            parent.context
+                        ), parent, false
+                    )
                 )
-            )
+            else return PagedPopularMovieViewHolderGrid(GridPopularMovieItemBinding.inflate(
+                LayoutInflater.from(parent.context),parent,false))
+        }
+
         else return NetworkViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.list_network_status_item, parent, false)
@@ -63,7 +83,9 @@ class PopularMovieListAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == MOVIE_TYPE) {
-            (holder as PagedPopularMovieViewHolder).bind(getItem(position))
+            if (recycleViewType==RecycleViewType.LIST)
+                (holder as PagedPopularMovieViewHolderList).bind(getItem(position))
+            else (holder as PagedPopularMovieViewHolderGrid).bind(getItem(position))
         } else (holder as NetworkViewHolder).bind(networkState)
     }
 

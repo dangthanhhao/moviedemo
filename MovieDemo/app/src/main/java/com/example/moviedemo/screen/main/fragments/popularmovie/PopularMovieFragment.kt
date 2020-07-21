@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.FragmentMovieBinding
 import com.example.moviedemo.repository.network.PopularMovieListAdapter
-import timber.log.Timber
+import com.example.moviedemo.repository.network.RecycleViewType
 
 
 class PopularMovieFragment : Fragment() {
@@ -21,6 +23,24 @@ class PopularMovieFragment : Fragment() {
         setHasOptionsMenu(true)
 
 
+    }
+
+    private var recycleViewType = RecycleViewType.LIST
+    private lateinit var binding: FragmentMovieBinding
+    private lateinit var viewModel: PopularMovieViewModel
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (recycleViewType == RecycleViewType.LIST) {
+            item.setIcon(R.drawable.ic_view_module_white_24dp)
+            recycleViewType = RecycleViewType.GRID
+
+        } else {
+            item.setIcon(R.drawable.ic_view_list_white_24dp)
+            recycleViewType = RecycleViewType.LIST
+        }
+        setupRecycleView()
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -35,39 +55,45 @@ class PopularMovieFragment : Fragment() {
     ): View? {
 
         val viewModelFactory = PopularMovieViewModelFactory(activity!!.application)
-        val viewModel =
+        viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(PopularMovieViewModel::class.java)
-        val binding = FragmentMovieBinding.inflate(inflater, container, false)
+        binding = FragmentMovieBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
-        val adapter = PopularMovieListAdapter()
+        setupRecycleView()
+        return binding.root
+    }
+
+    private fun setupRecycleView() {
+        val adapter = PopularMovieListAdapter(recycleViewType)
+
+        val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        if (recycleViewType == RecycleViewType.GRID) {
+            binding.listPopular.layoutManager = GridLayoutManager(context, 2)
+            binding.listPopular.removeItemDecorationAt(0)
+        } else {
+            binding.listPopular.addItemDecoration(aDevidedLine)
+            binding.listPopular.layoutManager = LinearLayoutManager(context)
+        }
+
         binding.listPopular.adapter = adapter
         binding.listPopular.setHasFixedSize(true)
-
         viewModel.moviePagedList.observe(this, Observer {
             adapter.submitList(it)
-        }
-        )
-        //fix auto scroll when  first time called
-        var callfirstTime = 2
-        viewModel.listFactory.networkState.observe(this, Observer {
-
-            val listchanged = adapter.setNetworkState(it)
-            Timber.i("List changed: $listchanged")
-            if (callfirstTime > 0 && listchanged) {
-                binding.listPopular.scrollToPosition(0)
-                callfirstTime--
-            }
-
         })
 
-        binding.listPopular.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
-        return binding.root
+        //fix auto scroll when  first time called
+        var callTimes = 2
+
+        viewModel.listFactory.networkState.observe(this, Observer {
+            val listchanged = adapter.setNetworkState(it)
+            if (callTimes > 0 && listchanged && recycleViewType == RecycleViewType.LIST) {
+                binding.listPopular.scrollToPosition(0)
+                callTimes--
+            }
+        })
+
+
     }
 
 

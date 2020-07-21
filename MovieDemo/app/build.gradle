@@ -78,13 +78,3 @@ dependencies {
     implementation "androidx.paging:paging-rxjava2:2.1.2"
 
 }
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == "androidx") {
-            if (!requested.name.startsWith("multidex")) {
-                details.useVersion "${targetSdk}.+"
-            }
-        }
-    }
-}
