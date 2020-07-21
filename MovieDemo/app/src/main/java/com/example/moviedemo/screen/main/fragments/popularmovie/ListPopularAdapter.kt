@@ -1,19 +1,21 @@
-package com.example.moviedemo.screen.main.fragments.movie
+package com.example.moviedemo.screen.main.fragments.popularmovie
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviedemo.databinding.ListPopularMovieBinding
+
+import com.example.moviedemo.databinding.ListPopularMovieItemBinding
 import com.example.moviedemo.repository.network.Movie
 
 class ListPopularAdapter : ListAdapter<Movie, ListPopularAdapter.ListPopularViewHolder>(DiffCallBack) {
 
-    class ListPopularViewHolder(private var binding: ListPopularMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ListPopularViewHolder(private var binding: ListPopularMovieItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
             binding.movie = movie
-            binding.edittextRating.setText(movie.vote_average.toString()+"/10")
+            binding.edittextRating.setText(movie.vote_average.toString() + "/10")
             binding.executePendingBindings()
         }
     }
@@ -29,7 +31,13 @@ class ListPopularAdapter : ListAdapter<Movie, ListPopularAdapter.ListPopularView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListPopularViewHolder {
-        return ListPopularViewHolder(ListPopularMovieBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ListPopularViewHolder(
+            ListPopularMovieItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ListPopularViewHolder, position: Int) {

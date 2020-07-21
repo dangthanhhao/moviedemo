@@ -3,17 +3,11 @@ package com.example.moviedemo
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.net.UriCompat
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.moviedemo.repository.Repository
-import com.example.moviedemo.repository.network.Movie
-import com.example.moviedemo.screen.main.fragments.movie.ListPopularAdapter
 import timber.log.Timber
 import java.io.File
 

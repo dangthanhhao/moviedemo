@@ -1,15 +1,16 @@
 package com.example.moviedemo.repository
 
-import android.content.Context
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
-
-
 import com.example.moviedemo.repository.local.*
-import com.example.moviedemo.repository.network.*
-
-import io.reactivex.*
+import com.example.moviedemo.repository.network.BASE_IMAGE_URL
+import com.example.moviedemo.repository.network.MovieApi
+import com.example.moviedemo.repository.network.PopularMoviesResponse
+import io.reactivex.Completable
+import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -49,7 +50,8 @@ class Repository(val context: Context) {
     }
 
     fun getPopularMovie(page:Int=1): Observable<PopularMoviesResponse> {
-        return movieApi.getPopularMovies(page = page)
+        return movieApi.getPopularMovies(page = page).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
     }
 
 
@@ -59,5 +61,6 @@ class Repository(val context: Context) {
             return BASE_IMAGE_URL+relativeURL.substring(1)
         }
     }
+
 
 }
