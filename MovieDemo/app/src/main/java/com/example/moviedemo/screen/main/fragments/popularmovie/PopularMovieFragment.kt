@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.FragmentMovieBinding
 import com.example.moviedemo.repository.network.PopularMovieListAdapter
@@ -41,17 +42,31 @@ class PopularMovieFragment : Fragment() {
 
         val adapter = PopularMovieListAdapter()
         binding.listPopular.adapter = adapter
+        binding.listPopular.setHasFixedSize(true)
 
         viewModel.moviePagedList.observe(this, Observer {
             adapter.submitList(it)
         }
         )
-
+        //fix auto scroll when  first time called
+        var callfirstTime = 2
         viewModel.listFactory.networkState.observe(this, Observer {
-            adapter.setNetworkState(it)
-            Timber.i("Network state ${it.status}")
+
+            val listchanged = adapter.setNetworkState(it)
+            Timber.i("List changed: $listchanged")
+            if (callfirstTime > 0 && listchanged) {
+                binding.listPopular.scrollToPosition(0)
+                callfirstTime--
+            }
+
         })
 
+        binding.listPopular.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         return binding.root
     }
 

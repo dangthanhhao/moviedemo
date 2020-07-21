@@ -12,24 +12,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.ActivityMainBinding
-import com.example.moviedemo.repository.Repository
-import com.example.moviedemo.repository.local.UserModel
 import com.example.moviedemo.screen.UserProfileViewModel
 import com.example.moviedemo.screen.UserProfileViewModelFactory
 import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.util.ReadFilePermisnion
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Action
-import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,7 +28,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("Main activity","Test")
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
+            this,
             R.layout.activity_main
         )
         binding.lifecycleOwner = this
@@ -47,19 +38,22 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         val navController = findNavController(R.id.myNavHostFragment)
-        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+//       appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        appBarConfiguration = AppBarConfiguration(binding.bottomNav.menu, drawerLayout)
         binding.bottomNav.setupWithNavController(navController)
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
         //set click listener
         binding.buttonEditProfile.setOnClickListener {
-            val t=Intent(this, ProfileActivity::class.java)
+            val t = Intent(this, ProfileActivity::class.java)
             startActivity(t)
         }
         // create viewmodel
-        val viewModelFactory= UserProfileViewModelFactory(application)
-        val viewModel=ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
-        binding.viewModel=viewModel
+        val viewModelFactory = UserProfileViewModelFactory(application)
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
+        binding.viewModel = viewModel
 
         ReadFilePermisnion.verifyStoragePermissions(this)
 

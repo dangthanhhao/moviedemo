@@ -80,7 +80,7 @@ class PopularMovieListAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>
         return if (hasExtraRow() && position == itemCount - 1) NETWORK_TYPE else MOVIE_TYPE
     }
 
-    fun setNetworkState(newNetworkState: NetworkState?) {
+    fun setNetworkState(newNetworkState: NetworkState?): Boolean {
         val preState = this.networkState
         val hadExtraRow = hasExtraRow()
         this.networkState = newNetworkState
@@ -97,9 +97,11 @@ class PopularMovieListAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>
                 notifyItemRemoved(super.getItemCount())
             else
                 notifyItemInserted(super.getItemCount())
+            return true
         } else if (hasExtraRow && preState != newNetworkState) {
             notifyItemChanged(itemCount - 1)
 
         }
+        return false
     }
 }
