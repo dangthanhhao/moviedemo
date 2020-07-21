@@ -7,10 +7,8 @@ import androidx.lifecycle.LiveDataReactiveStreams
 
 
 import com.example.moviedemo.repository.local.*
-import com.example.moviedemo.repository.network.BASE_IMAGE_URL
+import com.example.moviedemo.repository.network.*
 
-import com.example.moviedemo.repository.network.MovieApi
-import com.example.moviedemo.repository.network.PopularMoviesResponse
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,6 +24,7 @@ class Repository(val context: Context) {
 
     fun getUserProfile(): LiveData<UserModel> {
         //An action check if current user is created in DB. If not, create (insert) a row and then return the row (current user)
+
         val action = userDAO.checkCurrentUser()
             .switchIfEmpty(Maybe.just(UserModel())).flatMapCompletable {
 //                Timber.i("Current user ${it.toString()}")

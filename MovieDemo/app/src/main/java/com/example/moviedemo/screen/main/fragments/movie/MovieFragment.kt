@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.FragmentMovieBinding
 import com.example.moviedemo.repository.network.Movie
+import com.example.moviedemo.repository.network.Status
 import com.example.moviedemo.util.EndlessRecyclerViewScrollListener
 import timber.log.Timber
 
@@ -23,12 +24,10 @@ class BlankFragment : Fragment() {
         setHasOptionsMenu(true)
 
 
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater?.inflate(R.menu.filtermenu,menu)
+        inflater?.inflate(R.menu.filtermenu, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
     }
@@ -38,37 +37,40 @@ class BlankFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val viewModelFactory=MoviePopularViewModelFactory(activity!!.application)
-        val viewModel=ViewModelProviders.of(this,viewModelFactory).get(PopularMovieViewModel::class.java)
-        val binding=FragmentMovieBinding.inflate(inflater,container,false)
-        binding.viewModel=viewModel
+        val viewModelFactory = MoviePopularViewModelFactory(activity!!.application)
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(PopularMovieViewModel::class.java)
+        val binding = FragmentMovieBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
 
-        val apdater= ListPopularAdapter()
-        binding.listPopular.adapter=apdater
+        val apdater = ListPopularAdapter()
+        binding.listPopular.adapter = apdater
 
+        viewModel.movies.observe(this, Observer {
+            Timber.i("ASDASD")
+            apdater.submitList(it.toList())
 
-       viewModel.movies.observe(this, Observer {
-    Timber.i("ASDASD")
-           apdater.submitList(it.toList())
+            binding.executePendingBindings()
+        })
 
-           binding.executePendingBindings()
-       })
-
-        val scrollListener = object : EndlessRecyclerViewScrollListener(binding.listPopular.layoutManager as LinearLayoutManager) {
+        val scrollListener = object :
+            EndlessRecyclerViewScrollListener(binding.listPopular.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                viewModel.getMovies(page+1)
+                viewModel.getMovies(page + 1)
                 Timber.i("Load more ${page}")
             }
         }
 
         binding.listPopular.addOnScrollListener(scrollListener)
         // Inflate the layout for this fragment
+
+        viewModel.networkState.observe(this, Observer {
+            binding.progressBar.visibility= if( it.status==Status.RUNING) View.VISIBLE else View.GONE
+        })
         return binding.root
     }
-
-
 
 
 }
