@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
-
+        tools:openDrawer="start"
         >
 
 
@@ -82,7 +82,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
-                    android:src="@drawable/beautiful_cat"
+                    android:src="@drawable/tree"
                     app:bindAvatarProfile="@{viewModel.userProfile.avatar}"
                     app:civ_border_color="#FF000000"
                     app:civ_border_width="1dp"

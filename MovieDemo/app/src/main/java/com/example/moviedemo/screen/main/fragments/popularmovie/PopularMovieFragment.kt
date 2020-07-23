@@ -41,6 +41,7 @@ class PopularMovieFragment : DaggerFragment() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId != R.id.filter_menu) return super.onOptionsItemSelected(item)
         if (recycleViewType == RecycleViewType.LIST) {
             item.setIcon(R.drawable.ic_view_list_white_24dp)
             recycleViewType = RecycleViewType.GRID
