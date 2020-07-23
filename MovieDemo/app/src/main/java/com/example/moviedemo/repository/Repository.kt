@@ -7,7 +7,9 @@ import com.example.moviedemo.repository.local.UserDao
 import com.example.moviedemo.repository.local.UserModel
 import com.example.moviedemo.repository.local.checkCurrentUser
 import com.example.moviedemo.repository.local.getCurrentUser
+import com.example.moviedemo.repository.local.movie.MovieDAO
 import com.example.moviedemo.repository.network.BASE_IMAGE_URL
+import com.example.moviedemo.repository.network.Movie
 import com.example.moviedemo.repository.network.MovieApi
 import com.example.moviedemo.repository.network.PopularMoviesResponse
 import io.reactivex.Completable
@@ -20,7 +22,11 @@ import javax.inject.Singleton
 
 
 @Singleton
-class Repository @Inject constructor(val userDAO: UserDao, val movieApi: MovieApi) {
+class Repository @Inject constructor(
+    val userDAO: UserDao,
+    val movieApi: MovieApi,
+    val movieDAO: MovieDAO
+) {
 
 
     fun getUserProfile(): LiveData<UserModel> {
@@ -54,12 +60,23 @@ class Repository @Inject constructor(val userDAO: UserDao, val movieApi: MovieAp
     }
 
 
-    companion object{
-        fun getUrLImage(relativeURL :String?): String {
+    companion object {
+        fun getUrLImage(relativeURL: String?): String {
             if (relativeURL.isNullOrEmpty()) return ""
-            return BASE_IMAGE_URL+relativeURL.substring(1)
+            return BASE_IMAGE_URL + relativeURL.substring(1)
         }
     }
 
+    fun insertMovieFavourtie(movie: Movie) {
+        movieDAO.insert(movie).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe({}, {
+            it.printStackTrace()
+        })
+    }
 
+    fun getAllMovieFavourite(): LiveData<List<Movie>> {
+        return LiveDataReactiveStreams.fromPublisher(
+            movieDAO.getALL().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+        )
+    }
 }

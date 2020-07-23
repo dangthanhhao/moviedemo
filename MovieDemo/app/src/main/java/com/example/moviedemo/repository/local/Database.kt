@@ -5,6 +5,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.example.moviedemo.repository.local.movie.MovieDAO
+import com.example.moviedemo.repository.network.Movie
 import java.util.*
 
 class Converters {
@@ -19,10 +21,15 @@ class Converters {
     }
 }
 
-@androidx.room.Database(entities = [UserModel::class], version = 1, exportSchema = false)
+@androidx.room.Database(
+    entities = [UserModel::class, Movie::class],
+    version = 2,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class Database : RoomDatabase(){
-    abstract val UserDao:UserDao
+    abstract val UserDao: UserDao
+    abstract val MovieDao: MovieDAO
 //Singleton
     companion object{
         private var INSTANCE:Database?= null

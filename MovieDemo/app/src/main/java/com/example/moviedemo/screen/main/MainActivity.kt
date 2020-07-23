@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -17,9 +18,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseActivity
 import com.example.moviedemo.databinding.ActivityMainBinding
+import com.example.moviedemo.repository.Repository
+import com.example.moviedemo.repository.network.Movie
 import com.example.moviedemo.screen.UserProfileViewModel
 import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.util.ReadFilePermisnion
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -30,6 +34,8 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    @Inject
+    lateinit var repository: Repository
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("Main activity", "Test")
         super.onCreate(savedInstanceState)
@@ -81,7 +87,13 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("CheckResult")
     private fun test() {
+        repository.insertMovieFavourtie(Movie())
 
+        val a = repository.getAllMovieFavourite()
+
+        a.observe(this, Observer {
+            Timber.i("All movies: $it")
+        })
 
     }
 
