@@ -43,7 +43,6 @@ class Repository(val context: Context) {
         )
     }
 
-
     fun updateUserProfile(user: UserModel) {
         userDAO.update(user).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
             .subscribe()

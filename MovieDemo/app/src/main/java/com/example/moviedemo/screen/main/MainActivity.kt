@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,18 +15,23 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.moviedemo.R
+import com.example.moviedemo.base.BaseActivity
 import com.example.moviedemo.databinding.ActivityMainBinding
 import com.example.moviedemo.screen.UserProfileViewModel
-import com.example.moviedemo.screen.UserProfileViewModelFactory
 import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.util.ReadFilePermisnion
+import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("Main activity","Test")
+        Log.d("Main activity", "Test")
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
             this,
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(t)
         }
         // create viewmodel
-        val viewModelFactory = UserProfileViewModelFactory(application)
+
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
         binding.viewModel = viewModel
@@ -76,23 +81,6 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("CheckResult")
     private fun test() {
-//        Timber.i("Begib test")
-//        var movies=Repository(this).getPopularMovie()
-//
-//            movies.observeOn(AndroidSchedulers.mainThread()).timeout(3,TimeUnit.SECONDS).onErrorReturn {
-//                it.printStackTrace()
-//                return@onErrorReturn null
-//            }
-//            .subscribeOn(Schedulers.io())
-//            .subscribe({
-//            Timber.i("Got ${it.toString()}")
-//        },{
-//            it.printStackTrace()
-//        },{
-//            Timber.i("Complete")
-//        })
-
-
 
 
     }

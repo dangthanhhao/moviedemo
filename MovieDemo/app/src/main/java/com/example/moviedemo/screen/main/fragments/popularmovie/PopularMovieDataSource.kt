@@ -1,9 +1,11 @@
-package com.example.moviedemo.repository.network
+package com.example.moviedemo.screen.main.fragments.popularmovie
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.example.moviedemo.repository.Repository
+import com.example.moviedemo.repository.network.Movie
+import com.example.moviedemo.repository.network.NetworkState
 import timber.log.Timber
 
 class PopularMovieDataSource(val repository: Repository) : PageKeyedDataSource<Int, Movie>() {

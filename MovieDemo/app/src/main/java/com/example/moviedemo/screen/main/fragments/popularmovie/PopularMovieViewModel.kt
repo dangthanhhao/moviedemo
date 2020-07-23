@@ -5,13 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.moviedemo.repository.Repository
-import com.example.moviedemo.repository.network.PopularMovieDataSourceFactory
 
 class PopularMovieViewModel(application: Application) : AndroidViewModel(application) {
     val repository by lazy { Repository(application) }
 
 
-    val listFactory = PopularMovieDataSourceFactory(repository)
+    val listFactory =
+        PopularMovieDataSourceFactory(
+            repository
+        )
     val config = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
         .setPageSize(20)

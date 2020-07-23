@@ -1,4 +1,4 @@
-package com.example.moviedemo.repository.network
+package com.example.moviedemo.screen.main.fragments.popularmovie
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +10,18 @@ import com.example.moviedemo.R
 import com.example.moviedemo.databinding.GridPopularMovieItemBinding
 
 import com.example.moviedemo.databinding.ListPopularMovieItemBinding
-enum class RecycleViewType{
+import com.example.moviedemo.repository.network.Movie
+import com.example.moviedemo.repository.network.NetworkState
+
+enum class RecycleViewType {
     LIST,
     GRID
 }
-class PopularMovieListAdapter(val recycleViewType: RecycleViewType=RecycleViewType.LIST) : PagedListAdapter<Movie, RecyclerView.ViewHolder>(diffCallback) {
+
+class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleViewType.LIST) :
+    PagedListAdapter<Movie, RecyclerView.ViewHolder>(
+        diffCallback
+    ) {
     val MOVIE_TYPE = 1
     val NETWORK_TYPE = 2
     private var networkState: NetworkState? = null
@@ -62,7 +69,7 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType=RecycleViewTy
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == MOVIE_TYPE){
-            if(recycleViewType==RecycleViewType.LIST)
+            if (recycleViewType == RecycleViewType.LIST)
                 return PagedPopularMovieViewHolderList(
                     ListPopularMovieItemBinding.inflate(
                         LayoutInflater.from(
@@ -70,8 +77,11 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType=RecycleViewTy
                         ), parent, false
                     )
                 )
-            else return PagedPopularMovieViewHolderGrid(GridPopularMovieItemBinding.inflate(
-                LayoutInflater.from(parent.context),parent,false))
+            else return PagedPopularMovieViewHolderGrid(
+                GridPopularMovieItemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
         }
 
         else return NetworkViewHolder(
@@ -83,7 +93,7 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType=RecycleViewTy
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == MOVIE_TYPE) {
-            if (recycleViewType==RecycleViewType.LIST)
+            if (recycleViewType == RecycleViewType.LIST)
                 (holder as PagedPopularMovieViewHolderList).bind(getItem(position))
             else (holder as PagedPopularMovieViewHolderGrid).bind(getItem(position))
         } else (holder as NetworkViewHolder).bind(networkState)

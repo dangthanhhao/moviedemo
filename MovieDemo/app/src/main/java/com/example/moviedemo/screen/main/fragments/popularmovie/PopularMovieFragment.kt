@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.FragmentMovieBinding
-import com.example.moviedemo.repository.network.PopularMovieListAdapter
-import com.example.moviedemo.repository.network.RecycleViewType
 
 const val RECYCLE_VIEW_TYPE = "recycle_type"
 const val RECYCLE_LIST_CHANGES = "recycle_changes"
@@ -67,6 +65,7 @@ class PopularMovieFragment : Fragment() {
         savedInstanceState?.getInt(RECYCLE_LIST_CHANGES)?.let {
             recycleListChangeCount = it
         }
+
         val viewModelFactory = PopularMovieViewModelFactory(activity!!.application)
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(PopularMovieViewModel::class.java)
@@ -78,13 +77,14 @@ class PopularMovieFragment : Fragment() {
     }
 
     private fun setupRecycleView() {
-        val adapter = PopularMovieListAdapter(recycleViewType)
+        val adapter =
+            PopularMovieListAdapter(
+                recycleViewType
+            )
 
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         if (recycleViewType == RecycleViewType.GRID) {
             binding.listPopular.layoutManager = GridLayoutManager(context, 2)
-
-
             if (binding.listPopular.itemDecorationCount > 0) {
                 binding.listPopular.removeItemDecorationAt(0)
             }
@@ -99,7 +99,6 @@ class PopularMovieFragment : Fragment() {
         viewModel.moviePagedList.observe(this, Observer {
             adapter.submitList(it)
         })
-
 
 
         viewModel.listFactory.networkState.observe(this, Observer {
