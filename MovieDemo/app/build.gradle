@@ -64,17 +64,22 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     //rxjava for ROOM DB
     implementation "androidx.room:room-rxjava2:$version_room"
-    //stream to intergate rxjava with live data on ROOM DB
+    //flowable to livedata
     implementation "androidx.lifecycle:lifecycle-reactivestreams:$version_lifecycle_extensions"
     //convert gson
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //retrofit and  adapter
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
-//glide
+    //glide
     implementation "com.github.bumptech.glide:glide:$version_glide"
     //paging recycleview
     implementation "androidx.paging:paging-runtime:2.1.2"
     implementation "androidx.paging:paging-rxjava2:2.1.2"
-
+    //dagger and dagger android
+    def daggerVersion = "2.27"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 }
