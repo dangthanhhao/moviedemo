@@ -15,10 +15,7 @@ class PopularMovieDataSourceFactory(val repository: Repository) : DataSource.Fac
         }
 
     override fun create(): DataSource<Int, Movie> {
-        val datasource =
-            PopularMovieDataSource(
-                repository
-            )
+        val datasource = PopularMovieDataSource(repository)
         popularDataSource.postValue(datasource)
         return datasource
     }

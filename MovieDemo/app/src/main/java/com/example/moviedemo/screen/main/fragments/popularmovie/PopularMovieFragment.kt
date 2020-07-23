@@ -2,27 +2,32 @@ package com.example.moviedemo.screen.main.fragments.popularmovie
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.FragmentMovieBinding
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 const val RECYCLE_VIEW_TYPE = "recycle_type"
 const val RECYCLE_LIST_CHANGES = "recycle_changes"
 
-class PopularMovieFragment : Fragment() {
+class PopularMovieFragment : DaggerFragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var binding: FragmentMovieBinding
+    private lateinit var viewModel: PopularMovieViewModel
 
     private var recycleViewType = RecycleViewType.LIST
 
     //fix auto scroll when  first time called
     private var recycleListChangeCount = 4
-
-    private lateinit var binding: FragmentMovieBinding
-    private lateinit var viewModel: PopularMovieViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -66,7 +71,7 @@ class PopularMovieFragment : Fragment() {
             recycleListChangeCount = it
         }
 
-        val viewModelFactory = PopularMovieViewModelFactory(activity!!.application)
+
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(PopularMovieViewModel::class.java)
         binding = FragmentMovieBinding.inflate(inflater, container, false)
@@ -77,10 +82,7 @@ class PopularMovieFragment : Fragment() {
     }
 
     private fun setupRecycleView() {
-        val adapter =
-            PopularMovieListAdapter(
-                recycleViewType
-            )
+        val adapter = PopularMovieListAdapter(recycleViewType)
 
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         if (recycleViewType == RecycleViewType.GRID) {

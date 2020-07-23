@@ -1,6 +1,5 @@
 package com.example.moviedemo.screen
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -10,8 +9,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class UserProfileViewModel @Inject constructor(application: Application) : ViewModel() {
-    private val repository = Repository(application)
+class UserProfileViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+
     val userProfile: LiveData<UserModel> = repository.getUserProfile()
 
 

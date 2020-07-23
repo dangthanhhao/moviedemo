@@ -3,6 +3,7 @@ package com.example.moviedemo.di.component
 import android.app.Application
 import com.example.moviedemo.MovieDemoApplication
 import com.example.moviedemo.di.modules.ActivityBindingModule
+import com.example.moviedemo.di.modules.AppModule
 //import com.example.moviedemo.di.modules.ActivityBindingModule
 import com.example.moviedemo.di.modules.ViewModelModule
 import dagger.BindsInstance
@@ -12,7 +13,7 @@ import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AndroidInjectionModule::class, ViewModelModule::class, ActivityBindingModule::class])
+@Component(modules = [AndroidInjectionModule::class, ViewModelModule::class, ActivityBindingModule::class, AppModule::class])
 interface AppComponent : AndroidInjector<MovieDemoApplication> {
     @Component.Builder
     interface Builder {

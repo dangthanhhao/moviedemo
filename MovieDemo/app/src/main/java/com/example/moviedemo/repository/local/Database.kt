@@ -23,7 +23,7 @@ class Converters {
 @TypeConverters(Converters::class)
 abstract class Database : RoomDatabase(){
     abstract val UserDao:UserDao
-
+//Singleton
     companion object{
         private var INSTANCE:Database?= null
         fun getInstance(context: Context): Database{

@@ -1,10 +1,12 @@
 package com.example.moviedemo.repository
 
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
-import com.example.moviedemo.repository.local.*
+import com.example.moviedemo.repository.local.UserDao
+import com.example.moviedemo.repository.local.UserModel
+import com.example.moviedemo.repository.local.checkCurrentUser
+import com.example.moviedemo.repository.local.getCurrentUser
 import com.example.moviedemo.repository.network.BASE_IMAGE_URL
 import com.example.moviedemo.repository.network.MovieApi
 import com.example.moviedemo.repository.network.PopularMoviesResponse
@@ -13,15 +15,13 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-class Repository(val context: Context) {
-    private lateinit var userDAO: UserDao
-    private lateinit var movieApi: MovieApi
-    init {
-        userDAO = Database.getInstance(context).UserDao
-        movieApi=MovieApi.retrofitService
-    }
+@Singleton
+class Repository @Inject constructor(val userDAO: UserDao, val movieApi: MovieApi) {
+
 
     fun getUserProfile(): LiveData<UserModel> {
         //An action check if current user is created in DB. If not, create (insert) a row and then return the row (current user)
