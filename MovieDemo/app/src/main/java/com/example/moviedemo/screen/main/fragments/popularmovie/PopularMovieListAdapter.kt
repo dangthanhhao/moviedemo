@@ -18,7 +18,7 @@ enum class RecycleViewType {
     GRID
 }
 
-class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleViewType.LIST) :
+class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleViewType.LIST, val clickEvent: ClickListener) :
     PagedListAdapter<Movie, RecyclerView.ViewHolder>(
         diffCallback
     ) {
@@ -29,10 +29,14 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleView
     //viewholders
     class PagedPopularMovieViewHolderList(private var binding: ListPopularMovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: Movie?) {
+        fun bind(movie: Movie?, onClick: ClickListener?) {
             movie?.let {
                 binding.movie = movie
                 binding.edittextRating.setText(movie.vote_average.toString() + "/10")
+                onClick?.let {
+                    binding.clickEvent=onClick
+                }
+
                 binding.executePendingBindings()
             }
 
@@ -41,9 +45,12 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleView
 
     class PagedPopularMovieViewHolderGrid(private var binding: GridPopularMovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: Movie?) {
+        fun bind(movie: Movie?,onClick: ClickListener?) {
             movie?.let {
                 binding.movie = movie
+                onClick?.let {
+                    binding.clickEvent=onClick
+                }
                 binding.executePendingBindings()
             }
 
@@ -94,8 +101,8 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleView
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == MOVIE_TYPE) {
             if (recycleViewType == RecycleViewType.LIST)
-                (holder as PagedPopularMovieViewHolderList).bind(getItem(position))
-            else (holder as PagedPopularMovieViewHolderGrid).bind(getItem(position))
+                (holder as PagedPopularMovieViewHolderList).bind(getItem(position),clickEvent)
+            else (holder as PagedPopularMovieViewHolderGrid).bind(getItem(position),clickEvent)
         } else (holder as NetworkViewHolder).bind(networkState)
     }
 
@@ -136,4 +143,7 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleView
         }
         return false
     }
+}
+public class ClickListener(val callback: (movie:Int, name:String)-> Unit){
+    fun onCLick(movie: Int, name:String)= callback(movie,name)
 }

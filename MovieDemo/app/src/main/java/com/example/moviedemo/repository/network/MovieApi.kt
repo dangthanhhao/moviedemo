@@ -7,6 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 const val BASE_URL = "https://api.themoviedb.org/3/"
@@ -28,6 +29,9 @@ interface MovieApi {
         @Query("page") page: Int = 1
     ): Observable<PopularMoviesResponse>
 
+    @GET ("movie/{movieid}")
+    fun getMovieDetail(@Path("movieid") movieid:Int, @Query("api_key") apiKey: String = API_KEY)
+    : Observable<Movie>
 
     companion object {
         val retrofitService: MovieApi by lazy {

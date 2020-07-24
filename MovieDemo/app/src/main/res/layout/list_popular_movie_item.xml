@@ -7,13 +7,16 @@
         <variable
             name="movie"
             type="com.example.moviedemo.repository.network.Movie" />
+        <variable
+            name="clickEvent"
+            type="com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:onClick="@{()-> clickEvent.onCLick(movie.id,movie.title)}"
         android:paddingBottom="8dp">
 
         <TextView

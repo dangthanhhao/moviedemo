@@ -5,10 +5,12 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedemo.R
+import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentMovieBinding
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -16,7 +18,7 @@ import javax.inject.Inject
 const val RECYCLE_VIEW_TYPE = "recycle_type"
 const val RECYCLE_LIST_CHANGES = "recycle_changes"
 
-class PopularMovieFragment : DaggerFragment() {
+class PopularMovieFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -83,7 +85,9 @@ class PopularMovieFragment : DaggerFragment() {
     }
 
     private fun setupRecycleView() {
-        val adapter = PopularMovieListAdapter(recycleViewType)
+        val adapter = PopularMovieListAdapter(recycleViewType, ClickListener { movie,name->
+            findNavController().navigate(PopularMovieFragmentDirections.actionHomeFragmentToMovieDetailFragment(movie,name))
+        })
 
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         if (recycleViewType == RecycleViewType.GRID) {

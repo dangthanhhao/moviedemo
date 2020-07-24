@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-
+apply plugin: 'androidx.navigation.safeargs'
 android {
     android.defaultConfig.vectorDrawables.useSupportLibrary = true
     compileSdkVersion 30
@@ -57,6 +57,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+
     //circle image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     // Room and Lifecycle dependencies

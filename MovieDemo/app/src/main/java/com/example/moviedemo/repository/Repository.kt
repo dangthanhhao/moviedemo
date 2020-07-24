@@ -55,7 +55,8 @@ class Repository @Inject constructor(
     }
 
     fun getPopularMovie(page:Int=1): Observable<PopularMoviesResponse> {
-        return movieApi.getPopularMovies(page = page).observeOn(AndroidSchedulers.mainThread())
+        return movieApi.getPopularMovies(page = page)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
     }
 
@@ -78,5 +79,9 @@ class Repository @Inject constructor(
         return LiveDataReactiveStreams.fromPublisher(
             movieDAO.getALL().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
         )
+    }
+    fun getMovieDetail(id:Int):Observable<Movie>{
+        return movieApi.getMovieDetail(id).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
     }
 }

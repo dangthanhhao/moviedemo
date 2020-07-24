@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviedemo.di.util.ViewModelKey
 import com.example.moviedemo.screen.UserProfileViewModel
+import com.example.moviedemo.screen.main.fragments.detail.MovieDetailViewModel
 import com.example.moviedemo.screen.main.fragments.popularmovie.PopularMovieViewModel
 import com.example.moviedemo.util.ViewModelFactory
 import dagger.Binds
@@ -24,6 +25,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PopularMovieViewModel::class)
     abstract fun bindPopularMovieVM(vm: PopularMovieViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieDetailViewModel::class)
+    abstract fun bindMovieDetailVM(vm: MovieDetailViewModel): ViewModel
 
     @Singleton
     @Binds
