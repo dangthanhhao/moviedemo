@@ -1,13 +1,10 @@
 package com.example.moviedemo.repository
 
 
+import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
-import com.example.moviedemo.repository.local.UserDao
-import com.example.moviedemo.repository.local.UserModel
-import com.example.moviedemo.repository.local.checkCurrentUser
-import com.example.moviedemo.repository.local.getCurrentUser
-import com.example.moviedemo.repository.local.movie.MovieDAO
+import com.example.moviedemo.repository.local.*
 import com.example.moviedemo.repository.network.BASE_IMAGE_URL
 import com.example.moviedemo.repository.network.Movie
 import com.example.moviedemo.repository.network.MovieApi
@@ -17,6 +14,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +23,7 @@ import javax.inject.Singleton
 class Repository @Inject constructor(
     val userDAO: UserDao,
     val movieApi: MovieApi,
-    val movieDAO: MovieDAO
+    val favDAO: FavDAO
 ) {
 
 
@@ -68,20 +66,43 @@ class Repository @Inject constructor(
         }
     }
 
-    fun insertMovieFavourtie(movie: Movie) {
-        movieDAO.insert(movie).observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io()).subscribe({}, {
-            it.printStackTrace()
-        })
-    }
 
-    fun getAllMovieFavourite(): LiveData<List<Movie>> {
-        return LiveDataReactiveStreams.fromPublisher(
-            movieDAO.getALL().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-        )
-    }
-    fun getMovieDetail(id:Int):Observable<Movie>{
-        return movieApi.getMovieDetail(id).observeOn(AndroidSchedulers.mainThread())
+    fun getMovieDetail(id: Int): Observable<Movie> {
+        return movieApi.getMovieDetail(id)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
     }
+
+
+    fun getFavMovies(): LiveData<List<FavMovieModel>> {
+        return LiveDataReactiveStreams.fromPublisher(
+            favDAO.getAllFavIDs()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+        )
+
+    }
+
+    fun insertFavMovie(id: Int) {
+        val favMovie = FavMovieModel(id)
+        favDAO.insertFavID(favMovie)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+            }, {
+                if (it is SQLiteConstraintException) {
+                    Timber.i("Duplicate id, remove favourite movie $id!")
+                    deleteFavMovie(id)
+                }
+            })
+    }
+
+    fun deleteFavMovie(id: Int) {
+        val favMovie = FavMovieModel(id)
+        favDAO.deleteFavID(favMovie)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
 }

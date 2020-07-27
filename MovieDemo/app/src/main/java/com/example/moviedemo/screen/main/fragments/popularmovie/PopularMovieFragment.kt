@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentMovieBinding
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 const val RECYCLE_VIEW_TYPE = "recycle_type"
@@ -85,9 +84,17 @@ class PopularMovieFragment : BaseFragment() {
     }
 
     private fun setupRecycleView() {
-        val adapter = PopularMovieListAdapter(recycleViewType, ClickListener { movie,name->
-            findNavController().navigate(PopularMovieFragmentDirections.actionHomeFragmentToMovieDetailFragment(movie,name))
-        })
+        val adapter =
+            PopularMovieListAdapter(recycleViewType, navigateEvent = ClickListener { movie, name ->
+                findNavController().navigate(
+                    PopularMovieFragmentDirections.actionHomeFragmentToMovieDetailFragment(
+                        movie,
+                        name
+                    )
+                )
+            }, favEvent = ClickListener { movie, name ->
+                viewModel.setFavouriteMovie(movie)
+            }, listFav = viewModel.listFav)
 
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         if (recycleViewType == RecycleViewType.GRID) {

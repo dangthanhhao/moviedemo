@@ -3,13 +3,16 @@ package com.example.moviedemo.screen.main.fragments.popularmovie
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviedemo.R
 import com.example.moviedemo.databinding.GridPopularMovieItemBinding
-
 import com.example.moviedemo.databinding.ListPopularMovieItemBinding
+import com.example.moviedemo.repository.local.FavMovieModel
 import com.example.moviedemo.repository.network.Movie
 import com.example.moviedemo.repository.network.NetworkState
 
@@ -18,7 +21,12 @@ enum class RecycleViewType {
     GRID
 }
 
-class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleViewType.LIST, val clickEvent: ClickListener) :
+class PopularMovieListAdapter(
+    val recycleViewType: RecycleViewType = RecycleViewType.LIST,
+    val navigateEvent: ClickListener,
+    val favEvent: ClickListener,
+    val listFav: LiveData<List<FavMovieModel>>
+) :
     PagedListAdapter<Movie, RecyclerView.ViewHolder>(
         diffCallback
     ) {
@@ -29,13 +37,35 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleView
     //viewholders
     class PagedPopularMovieViewHolderList(private var binding: ListPopularMovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: Movie?, onClick: ClickListener?) {
+        fun bind(
+            movie: Movie?,
+            navigateEvent: ClickListener?,
+            favEvent: ClickListener?,
+            listFav: LiveData<List<FavMovieModel>>
+        ) {
             movie?.let {
                 binding.movie = movie
                 binding.edittextRating.setText(movie.vote_average.toString() + "/10")
-                onClick?.let {
-                    binding.clickEvent=onClick
+                navigateEvent?.let {
+                    binding.navigateEvent = navigateEvent
                 }
+                favEvent?.let {
+                    binding.favEvent = favEvent
+                }
+                binding.lifecycleOwner = this.itemView.context as LifecycleOwner
+                listFav.observe(binding.lifecycleOwner!!, Observer {
+                    var isFav = false
+                    for (item in it) {
+                        if (movie.id == item.movieID) {
+                            binding.favPopular.setImageResource(R.drawable.ic_star_black_24dp)
+                            isFav = true
+                            break
+                        }
+                    }
+                    if (!isFav) {
+                        binding.favPopular.setImageResource(R.drawable.ic_star_border_black_24dp)
+                    }
+                })
 
                 binding.executePendingBindings()
             }
@@ -101,8 +131,13 @@ class PopularMovieListAdapter(val recycleViewType: RecycleViewType = RecycleView
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == MOVIE_TYPE) {
             if (recycleViewType == RecycleViewType.LIST)
-                (holder as PagedPopularMovieViewHolderList).bind(getItem(position),clickEvent)
-            else (holder as PagedPopularMovieViewHolderGrid).bind(getItem(position),clickEvent)
+                (holder as PagedPopularMovieViewHolderList).bind(
+                    getItem(position),
+                    navigateEvent,
+                    favEvent,
+                    listFav
+                )
+            else (holder as PagedPopularMovieViewHolderGrid).bind(getItem(position), navigateEvent)
         } else (holder as NetworkViewHolder).bind(networkState)
     }
 

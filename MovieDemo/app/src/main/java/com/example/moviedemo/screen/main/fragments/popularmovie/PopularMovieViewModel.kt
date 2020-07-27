@@ -11,6 +11,7 @@ class PopularMovieViewModel @Inject constructor(val repository: Repository) : Vi
 
 
     val listFactory = PopularMovieDataSourceFactory(repository)
+    val listFav = repository.getFavMovies()
     val config = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
         .setPageSize(20)
@@ -22,5 +23,7 @@ class PopularMovieViewModel @Inject constructor(val repository: Repository) : Vi
 
     }
 
-
+    fun setFavouriteMovie(id: Int) {
+        repository.insertFavMovie(id)
+    }
 }

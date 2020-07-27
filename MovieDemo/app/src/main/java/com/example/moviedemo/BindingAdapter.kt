@@ -15,7 +15,6 @@ import java.io.File
 @BindingAdapter("bindAvatarProfile")
 fun bindAvatarProfile(imageView: ImageView, path: String?) {
 
-    Timber.i("Bind avatar $path")
     path?.let {
         val imgFile = File(path)
         if (imgFile.exists()) {
@@ -43,3 +42,4 @@ fun bindImagePoster(imgView: ImageView, imgURL: String?) {
         ).into(imgView)
     }
 }
+

@@ -7,16 +7,22 @@
         <variable
             name="movie"
             type="com.example.moviedemo.repository.network.Movie" />
+
         <variable
-            name="clickEvent"
+            name="navigateEvent"
             type="com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener" />
+
+        <variable
+            name="favEvent"
+            type="com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener" />
+
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{()-> clickEvent.onCLick(movie.id,movie.title)}"
+        android:onClick="@{()-> navigateEvent.onCLick(movie.id,movie.title)}"
         android:paddingBottom="8dp">
 
         <TextView
@@ -29,7 +35,7 @@
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageView5"
+            app:layout_constraintEnd_toStartOf="@+id/favPopular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,7 +62,8 @@
             app:layout_constraintTop_toTopOf="@+id/imagePoster" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:onClick="@{()->favEvent.onCLick(movie.id,movie.title)}"
+            android:id="@+id/favPopular"
             android:layout_width="37dp"
             android:layout_height="40dp"
             android:layout_marginEnd="16dp"

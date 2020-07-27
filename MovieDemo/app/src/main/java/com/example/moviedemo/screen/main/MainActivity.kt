@@ -19,7 +19,6 @@ import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseActivity
 import com.example.moviedemo.databinding.ActivityMainBinding
 import com.example.moviedemo.repository.Repository
-import com.example.moviedemo.repository.network.Movie
 import com.example.moviedemo.screen.UserProfileViewModel
 import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.util.ReadFilePermisnion
@@ -68,7 +67,7 @@ class MainActivity : BaseActivity() {
 
         ReadFilePermisnion.verifyStoragePermissions(this)
 
-        test()
+//        test()
 
 //        var badge = binding.bottomNav.getOrCreateBadge(R.id.favFragment)
 //        badge.isVisible = true
@@ -87,12 +86,14 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("CheckResult")
     private fun test() {
-        repository.insertMovieFavourtie(Movie())
+//        repository.insertFavMovie(1)
+//        repository.insertFavMovie(2)
+//        repository.insertFavMovie(3)
 
-        val a = repository.getAllMovieFavourite()
-
-        a.observe(this, Observer {
-            Timber.i("All movies: $it")
+//        repository.deleteFavMovie(2)
+        val listmovies = repository.getFavMovies()
+        listmovies.observe(this, Observer {
+            Timber.i("Test: ${it.toString()}")
         })
 
     }
