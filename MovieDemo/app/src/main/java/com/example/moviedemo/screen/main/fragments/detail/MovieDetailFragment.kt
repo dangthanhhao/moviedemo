@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
@@ -17,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentMovieDetailBinding
-import com.example.moviedemo.repository.network.Movie
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -68,11 +64,15 @@ class MovieDetailFragment : BaseFragment() {
     }
 
     private fun initRecycleView(listActor: RecyclerView) {
-        val adapter= ListActorAdapter()
-        val fakeData= listOf<Int>(1,2,3,4,5,6,7)
-        binding.listActor.adapter=adapter
+
+        val adapter = ListActorAdapter()
+        val fakeData = listOf<Int>(1, 2, 3, 4, 5, 6, 7)
+        //(listActor.layoutManager as LinearLayoutManager). orientation= RecyclerView.HORIZONTAL
+        listActor.adapter = adapter
         adapter.submitList(fakeData)
-        Timber.i("List have"+adapter.currentList.size.toString())
+        listActor.setHasFixedSize(true)
+        Timber.i("List have" + adapter.currentList.size.toString())
+
 
     }
 
