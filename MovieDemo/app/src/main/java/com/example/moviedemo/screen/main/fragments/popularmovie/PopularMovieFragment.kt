@@ -2,6 +2,7 @@ package com.example.moviedemo.screen.main.fragments.popularmovie
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -94,7 +95,20 @@ class PopularMovieFragment : BaseFragment() {
                     )
                 )
             }, favEvent = ClickListener { movie, name ->
-                viewModel.setFavouriteMovie(movie, name)
+                val builder = AlertDialog.Builder(context!!)
+
+                with(builder)
+                {
+                    setTitle("Confirm Favourite")
+                    setMessage("Are you sure to favour/unfavoured this movie?")
+                    setPositiveButton("Sure") { dialogInterface, i ->
+                        viewModel.setFavouriteMovie(movie, name)
+                    }
+                    setNegativeButton("Cancel", { dialogInterface, i -> })
+                    show()
+                }
+
+
             }, listFav = viewModel.listFav)
 
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)

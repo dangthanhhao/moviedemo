@@ -13,7 +13,8 @@ class UserProfileViewModel @Inject constructor(val repository: Repository) : Vie
 
     val userProfile: LiveData<UserModel> = repository.getUserProfile()
 
-    val numFavs = Transformations.map(repository.getFavMovies()) {
+    val listFavs = repository.getFavMovies()
+    val numFavs = Transformations.map(listFavs) {
         return@map it.size
     }
 

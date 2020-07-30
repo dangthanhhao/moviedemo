@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
@@ -32,8 +31,8 @@ class ProfileActivity : BaseActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var viewModel: UserProfileViewModel
-    var avatarPicked = ""
-    var imageBindFirstTime = false
+    private var avatarPicked = ""
+    private var imageBindFirstTime = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -142,18 +141,4 @@ class ProfileActivity : BaseActivity() {
         finish()
     }
 
-    fun bindAvatarProfileFirstTime(imageView: ImageView, path: String?) {
-        if (!imageBindFirstTime) return
-        Timber.i("Load $path")
-        path?.let {
-
-            val imgFile = File(path)
-            if (imgFile.exists()) {
-                imageView.setImageBitmap(BitmapFactory.decodeFile(imgFile.absolutePath))
-            }
-            imageBindFirstTime = false
-        }
-
-
-    }
 }

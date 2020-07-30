@@ -30,6 +30,7 @@ class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModel: UserProfileViewModel
 
     @Inject
     lateinit var repository: Repository
@@ -41,7 +42,7 @@ class MainActivity : BaseActivity() {
             R.layout.activity_main
         )
         binding.lifecycleOwner = this
-        val viewModel =
+        viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
         binding.viewModel = viewModel
 

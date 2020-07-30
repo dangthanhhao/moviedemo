@@ -1,7 +1,6 @@
 package com.example.moviedemo.screen.main.fragments.detail
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -19,14 +18,18 @@ class MovieDetailViewModel @Inject constructor(val repository: Repository) :View
     })
     @SuppressLint("CheckResult")
 
-    fun getMovie(id:Int){
+    fun getMovie(id: Int) {
         repository.getMovieDetail(id).subscribe({
-            movie.value=it
+            movie.value = it
 
             Timber.i("Loaded detail movie $it")
-            isLoading.value=false
-        },{
+            isLoading.value = false
+        }, {
             it.printStackTrace()
         })
+    }
+
+    fun setFavouriteMovie(id: Int, title: String) {
+        repository.insertFavMovie(id, title)
     }
 }

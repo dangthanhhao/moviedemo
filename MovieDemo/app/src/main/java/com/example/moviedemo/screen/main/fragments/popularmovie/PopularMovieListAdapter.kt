@@ -65,6 +65,7 @@ class PopularMovieListAdapter(
                     if (!isFav) {
                         binding.favPopular.setImageResource(R.drawable.ic_star_border_black_24dp)
                     }
+
                 })
 
                 binding.executePendingBindings()

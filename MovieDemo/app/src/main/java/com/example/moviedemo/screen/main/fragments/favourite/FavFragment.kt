@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView.OnQueryTextListener
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -36,7 +37,17 @@ class FavFragment : BaseFragment() {
         viewmodel = ViewModelProviders.of(this, factory).get(FavViewModel::class.java)
         val binding = FragmentFavBinding.inflate(inflater, container, false)
         val adapter = FavListAdapter(viewmodel, favEvent = ClickListener { movie, title ->
-            viewmodel.setFavouriteMovie(movie, title)
+            val builder = AlertDialog.Builder(context!!)
+            with(builder)
+            {
+                setTitle("Confirm Favourite")
+                setMessage("Are you sure to favour/unfavoured this movie?")
+                setPositiveButton("Sure") { dialogInterface, i ->
+                    viewmodel.setFavouriteMovie(movie, title)
+                }
+                setNegativeButton("Cancel", { dialogInterface, i -> })
+                show()
+            }
         }, navigateEvent = ClickListener { movie, title ->
             findNavController().navigate(
                 FavFragmentDirections.actionFavFragmentToMovieDetailFragment(
