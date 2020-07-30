@@ -9,6 +9,7 @@ import android.widget.SearchView.OnQueryTextListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentFavBinding
@@ -36,6 +37,13 @@ class FavFragment : BaseFragment() {
         val binding = FragmentFavBinding.inflate(inflater, container, false)
         val adapter = FavListAdapter(viewmodel, favEvent = ClickListener { movie, title ->
             viewmodel.setFavouriteMovie(movie, title)
+        }, navigateEvent = ClickListener { movie, title ->
+            findNavController().navigate(
+                FavFragmentDirections.actionFavFragmentToMovieDetailFragment(
+                    movie,
+                    title
+                )
+            )
         })
         binding.listFav.adapter = adapter
 

@@ -13,7 +13,11 @@ import com.example.moviedemo.repository.local.FavMovieModel
 import com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener
 import org.jetbrains.annotations.NotNull
 
-class FavListAdapter(val viewmodel: FavViewModel, val favEvent: ClickListener?) :
+class FavListAdapter(
+    val viewmodel: FavViewModel,
+    val favEvent: ClickListener?,
+    val navigateEvent: ClickListener
+) :
     ListAdapter<FavMovieModel, FavListAdapter.FavViewHolder>(favDiffCallback) {
 
     class FavViewHolder(val binding: @NotNull ListPopularMovieItemBinding) :
@@ -22,19 +26,21 @@ class FavListAdapter(val viewmodel: FavViewModel, val favEvent: ClickListener?) 
         fun bind(
             item: FavMovieModel,
             viewmodel: FavViewModel,
-            favEvent: ClickListener?
+            favEvent: ClickListener?,
+            navigateEvent: ClickListener
         ) {
             binding.loadingView.visibility = View.VISIBLE
             binding.layoutItem.visibility = View.INVISIBLE
             viewmodel.getMovieDetail(item.movieID).subscribe({
                 binding.movie = it
+
                 binding.edittextRating.setText(it.vote_average.toString() + "/10")
                 binding.favPopular.setImageResource(R.drawable.ic_star_black_24dp)
 
                 favEvent?.let {
                     binding.favEvent = favEvent
                 }
-
+                binding.navigateEvent = navigateEvent
                 binding.loadingView.visibility = View.GONE
                 binding.layoutItem.visibility = View.VISIBLE
             }, { it.printStackTrace() })
@@ -54,7 +60,7 @@ class FavListAdapter(val viewmodel: FavViewModel, val favEvent: ClickListener?) 
     }
 
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
-        holder.bind(getItem(position), viewmodel, favEvent)
+        holder.bind(getItem(position), viewmodel, favEvent, navigateEvent)
 
     }
 

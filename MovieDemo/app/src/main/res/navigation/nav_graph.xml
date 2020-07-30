@@ -32,7 +32,15 @@
         android:id="@+id/favFragment"
         android:name="com.example.moviedemo.screen.main.fragments.favourite.FavFragment"
         android:label="Favourite"
-        tools:layout="@layout/fragment_fav" />
+        tools:layout="@layout/fragment_fav">
+        <action
+            android:id="@+id/action_favFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.example.moviedemo.screen.main.fragments.detail.MovieDetailFragment"
