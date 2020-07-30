@@ -43,6 +43,8 @@ class PopularMovieListAdapter(
         ) {
             movie?.let {
                 binding.movie = movie
+                binding.loadingView.visibility = View.GONE
+                binding.layoutItem.visibility = View.VISIBLE
                 binding.edittextRating.setText(movie.vote_average.toString() + "/10")
                 navigateEvent?.let {
                     binding.navigateEvent = navigateEvent

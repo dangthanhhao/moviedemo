@@ -2,6 +2,7 @@ package com.example.moviedemo.screen.main.fragments.favourite
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -23,6 +24,8 @@ class FavListAdapter(val viewmodel: FavViewModel, val favEvent: ClickListener?) 
             viewmodel: FavViewModel,
             favEvent: ClickListener?
         ) {
+            binding.loadingView.visibility = View.VISIBLE
+            binding.layoutItem.visibility = View.INVISIBLE
             viewmodel.getMovieDetail(item.movieID).subscribe({
                 binding.movie = it
                 binding.edittextRating.setText(it.vote_average.toString() + "/10")
@@ -32,7 +35,8 @@ class FavListAdapter(val viewmodel: FavViewModel, val favEvent: ClickListener?) 
                     binding.favEvent = favEvent
                 }
 
-
+                binding.loadingView.visibility = View.GONE
+                binding.layoutItem.visibility = View.VISIBLE
             }, { it.printStackTrace() })
 
         }

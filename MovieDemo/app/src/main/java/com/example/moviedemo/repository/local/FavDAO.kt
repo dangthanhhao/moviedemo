@@ -1,7 +1,6 @@
 package com.example.moviedemo.repository.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import io.reactivex.Completable
@@ -16,8 +15,8 @@ interface FavDAO {
     @Insert
     fun insertFavID(item: FavMovieModel): Completable
 
-    @Delete
-    fun deleteFavID(item: FavMovieModel): Completable
+    @Query("delete from FavMovieModel where movieID=:movieID")
+    fun deleteFavID(movieID: Int): Completable
 //
 //    @Query("select * from FavMovieModel")
 //    fun getAllFavMoviesDatasource(): DataSource.Factory<Int,Movie>

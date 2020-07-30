@@ -31,7 +31,7 @@ class PopularMovieFragment : BaseFragment() {
     private var recycleListChangeCount = 4
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

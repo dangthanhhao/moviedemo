@@ -2,6 +2,7 @@ package com.example.moviedemo.screen.main.fragments.favourite
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView.OnQueryTextListener
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentFavBinding
 import com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener
+import timber.log.Timber
 import javax.inject.Inject
 
 class FavFragment : BaseFragment() {
@@ -29,6 +31,7 @@ class FavFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         viewmodel = ViewModelProviders.of(this, factory).get(FavViewModel::class.java)
         val binding = FragmentFavBinding.inflate(inflater, container, false)
         val adapter = FavListAdapter(viewmodel, favEvent = ClickListener { movie, title ->
@@ -66,8 +69,15 @@ class FavFragment : BaseFragment() {
             }
 
         })
-
+        setHasOptionsMenu(false)
         return binding.root
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        Timber.i("Hit")
+
+        return super.onOptionsItemSelected(item)
     }
 
 

@@ -3,16 +3,15 @@ package com.example.moviedemo.screen.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseActivity
 import com.example.moviedemo.databinding.ActivityMainBinding
@@ -27,6 +26,7 @@ import javax.inject.Inject
 class MainActivity : BaseActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var navController: NavController
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -48,14 +48,16 @@ class MainActivity : BaseActivity() {
         //set up Drawer and bottom nav
         drawerLayout = binding.drawerLayout
         setSupportActionBar(binding.toolbar)
-        val navController = findNavController(R.id.myNavHostFragment)
+        navController = findNavController(R.id.myNavHostFragment)
 //       appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         appBarConfiguration = AppBarConfiguration(binding.bottomNav.menu, drawerLayout)
+//        appBarConfiguration= AppBarConfiguration(setOf(R.id.homeFragment,R.id.favFragment),drawerLayout)
         binding.bottomNav.setupWithNavController(navController)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-        NavigationUI.setupWithNavController(binding.navView, navController)
 
+//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+//        NavigationUI.setupWithNavController(binding.navView, navController)
+        binding.navView.setupWithNavController(navController)
+        setupActionBarWithNavController(navController, appBarConfiguration)
         //set click listener on Edit profile button drawer
         binding.buttonEditProfile.setOnClickListener {
             val t = Intent(this, ProfileActivity::class.java)
@@ -66,9 +68,15 @@ class MainActivity : BaseActivity() {
         ReadFilePermisnion.verifyStoragePermissions(this)
         //setup badge on bottom nav
         viewModel.numFavs.observe(this, Observer {
+
             val badge = binding.bottomNav.getOrCreateBadge(R.id.favFragment)
-            badge.isVisible = true
-            badge.number = it
+            if (it == 0)
+                badge.isVisible = false
+            else {
+                badge.isVisible = true
+                badge.number = it
+            }
+
         })
 
 
@@ -94,9 +102,12 @@ class MainActivity : BaseActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.myNavHostFragment)
-//        return  navController.navigateUp();
-        return NavigationUI.navigateUp(navController, drawerLayout)
+        return navController.navigateUp(appBarConfiguration);
     }
 
-
+    //bottom nav
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(navController) ||
+                super.onOptionsItemSelected(item)
+    }
 }
