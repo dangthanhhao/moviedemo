@@ -27,9 +27,7 @@ class PopularMovieListAdapter(
     val favEvent: ClickListener,
     val listFav: LiveData<List<FavMovieModel>>
 ) :
-    PagedListAdapter<Movie, RecyclerView.ViewHolder>(
-        diffCallback
-    ) {
+    PagedListAdapter<Movie, RecyclerView.ViewHolder>(diffCallback) {
     val MOVIE_TYPE = 1
     val NETWORK_TYPE = 2
     private var networkState: NetworkState? = null

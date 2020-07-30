@@ -9,13 +9,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.concurrent.TimeUnit
 
 const val BASE_URL = "https://api.themoviedb.org/3/"
 const val API_KEY = "0267c13d8c7d1dcddb40001ba6372235"
 public const val BASE_IMAGE_URL="https://image.tmdb.org/t/p/w185/"
 
 private val retrofit = Retrofit.Builder()
-    .client(OkHttpClient())
+    .client(
+        OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS).build()
+    )
     .addConverterFactory(GsonConverterFactory.create())
     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
     .baseUrl(

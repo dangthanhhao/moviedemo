@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 const val RECYCLE_VIEW_TYPE = "recycle_type"
 const val RECYCLE_LIST_CHANGES = "recycle_changes"
-
+const val GRID_COLUMNS = 2
 class PopularMovieFragment : BaseFragment() {
 
     @Inject
@@ -84,6 +84,7 @@ class PopularMovieFragment : BaseFragment() {
     }
 
     private fun setupRecycleView() {
+
         val adapter =
             PopularMovieListAdapter(recycleViewType, navigateEvent = ClickListener { movie, name ->
                 findNavController().navigate(
@@ -92,15 +93,29 @@ class PopularMovieFragment : BaseFragment() {
                         name
                     )
                 )
-            }, favEvent = ClickListener { movie, name ->
+            }, favEvent = ClickListener { movie, _ ->
                 viewModel.setFavouriteMovie(movie)
             }, listFav = viewModel.listFav)
 
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         if (recycleViewType == RecycleViewType.GRID) {
-            binding.listPopular.layoutManager = GridLayoutManager(context, 2)
+
+
+            val gridLayoutManager = GridLayoutManager(context, GRID_COLUMNS)
+            binding.listPopular.layoutManager = gridLayoutManager
+            //remove devide line if has
             if (binding.listPopular.itemDecorationCount > 0) {
                 binding.listPopular.removeItemDecorationAt(0)
+            }
+            //span loading-item to 2 columns
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    val viewType = adapter.getItemViewType(position)
+                    if (viewType == adapter.NETWORK_TYPE) {
+                        return GRID_COLUMNS
+                    } else return 1
+                }
+
             }
 
         } else {

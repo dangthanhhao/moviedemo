@@ -18,4 +18,7 @@ interface FavDAO {
 
     @Delete
     fun deleteFavID(item: FavMovieModel): Completable
+//
+//    @Query("select * from FavMovieModel")
+//    fun getAllFavMoviesDatasource(): DataSource.Factory<Int,Movie>
 }

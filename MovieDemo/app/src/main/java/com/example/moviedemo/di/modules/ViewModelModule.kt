@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.moviedemo.di.util.ViewModelKey
 import com.example.moviedemo.screen.UserProfileViewModel
 import com.example.moviedemo.screen.main.fragments.detail.MovieDetailViewModel
+import com.example.moviedemo.screen.main.fragments.favourite.FavViewModel
 import com.example.moviedemo.screen.main.fragments.popularmovie.PopularMovieViewModel
 import com.example.moviedemo.util.ViewModelFactory
 import dagger.Binds
@@ -15,6 +16,11 @@ import javax.inject.Singleton
 
 @Module
 abstract class ViewModelModule {
+    //
+    @Singleton
+    @Binds
+    abstract fun bindVMFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+
     //list all viewmodel can produce by factory
     @Binds
     @IntoMap
@@ -31,7 +37,9 @@ abstract class ViewModelModule {
     @ViewModelKey(MovieDetailViewModel::class)
     abstract fun bindMovieDetailVM(vm: MovieDetailViewModel): ViewModel
 
-    @Singleton
+
     @Binds
-    abstract fun bindVMFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    @IntoMap
+    @ViewModelKey(FavViewModel::class)
+    abstract fun bindFavMovieVM(vm: FavViewModel): ViewModel
 }

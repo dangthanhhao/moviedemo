@@ -66,22 +66,8 @@ class MainActivity : BaseActivity() {
         binding.viewModel = viewModel
 
         ReadFilePermisnion.verifyStoragePermissions(this)
+test()
 
-//        test()
-
-//        var badge = binding.bottomNav.getOrCreateBadge(R.id.favFragment)
-//        badge.isVisible = true
-//// An icon only badge will be displayed unless a number is set:
-//        badge.number = 99
-
-//        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, args: Bundle? ->
-//            if (nd.id == nc.graph.startDestination) {
-//
-//                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-//            } else {
-//                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-//            }
-//        }
     }
 
     @SuppressLint("CheckResult")

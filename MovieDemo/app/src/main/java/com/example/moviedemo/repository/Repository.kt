@@ -30,7 +30,7 @@ class Repository @Inject constructor(
     fun getUserProfile(): LiveData<UserModel> {
         //An action check if current user is created in DB. If not, create (insert) a row and then return the row (current user)
 
-        val action = userDAO.checkCurrentUser()
+        val action = userDAO.checkCurrentUser().doOnError({ it.printStackTrace() })
             .switchIfEmpty(Maybe.just(UserModel())).flatMapCompletable {
 //                Timber.i("Current user ${it.toString()}")
                 if (it.userID == 0L)
