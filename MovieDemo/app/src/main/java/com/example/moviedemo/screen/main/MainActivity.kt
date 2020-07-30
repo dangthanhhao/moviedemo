@@ -3,8 +3,6 @@ package com.example.moviedemo.screen.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -36,17 +34,20 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var repository: Repository
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("Main activity", "Test")
+        //init viewmodel, binding
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
             this,
             R.layout.activity_main
         )
         binding.lifecycleOwner = this
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
+        binding.viewModel = viewModel
+
         //set up Drawer and bottom nav
         drawerLayout = binding.drawerLayout
         setSupportActionBar(binding.toolbar)
-
         val navController = findNavController(R.id.myNavHostFragment)
 //       appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         appBarConfiguration = AppBarConfiguration(binding.bottomNav.menu, drawerLayout)
@@ -54,20 +55,25 @@ class MainActivity : BaseActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 //        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
-        //set click listener
+
+        //set click listener on Edit profile button drawer
         binding.buttonEditProfile.setOnClickListener {
             val t = Intent(this, ProfileActivity::class.java)
             startActivity(t)
         }
-        // create viewmodel
 
-        val viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
-        binding.viewModel = viewModel
-
+        // Check and request permision for read write internal files
         ReadFilePermisnion.verifyStoragePermissions(this)
-test()
+        //setup badge on bottom nav
+        viewModel.numFavs.observe(this, Observer {
+            val badge = binding.bottomNav.getOrCreateBadge(R.id.favFragment)
+            badge.isVisible = true
+            badge.number = it
+        })
 
+
+
+        test()
     }
 
     @SuppressLint("CheckResult")
@@ -82,6 +88,7 @@ test()
             Timber.i("Test: ${it.toString()}")
         })
 
+
     }
 
 
@@ -92,8 +99,4 @@ test()
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        return super.onOptionsItemSelected(item)
-    }
 }

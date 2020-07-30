@@ -13,6 +13,9 @@ class UserProfileViewModel @Inject constructor(val repository: Repository) : Vie
 
     val userProfile: LiveData<UserModel> = repository.getUserProfile()
 
+    val numFavs = Transformations.map(repository.getFavMovies()) {
+        return@map it.size
+    }
 
     val userDateOfBirthString = Transformations.map(userProfile) {
         SimpleDateFormat("yyyy-MM-dd").format(it.dateOfBirth)
@@ -21,8 +24,8 @@ class UserProfileViewModel @Inject constructor(val repository: Repository) : Vie
         if (it.gender) "Male" else "Female"
     }
 
-    fun updateUserProfile(avatarUriStr:String?){
-        avatarUriStr?.let{
+    fun updateUserProfile(avatarUriStr: String?) {
+        avatarUriStr?.let {
             userProfile.value?.avatar=avatarUriStr
         }
 
