@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView.OnQueryTextListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -30,8 +31,8 @@ class FavFragment : BaseFragment() {
     ): View? {
         viewmodel = ViewModelProviders.of(this, factory).get(FavViewModel::class.java)
         val binding = FragmentFavBinding.inflate(inflater, container, false)
-        val adapter = FavListAdapter(viewmodel, favEvent = ClickListener { movie, _ ->
-            viewmodel.setFavouriteMovie(movie)
+        val adapter = FavListAdapter(viewmodel, favEvent = ClickListener { movie, title ->
+            viewmodel.setFavouriteMovie(movie, title)
         })
         binding.listFav.adapter = adapter
 
@@ -46,6 +47,26 @@ class FavFragment : BaseFragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        binding.searchView.setOnClickListener {
+            binding.searchView.isIconified = false
+        }
+
+
+        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+
+                viewmodel.filterKeyword = p0
+                viewmodel.filterList()
+                return false
+            }
+
+        })
+
         return binding.root
     }
 

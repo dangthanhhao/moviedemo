@@ -83,8 +83,8 @@ class Repository @Inject constructor(
 
     }
 
-    fun insertFavMovie(id: Int) {
-        val favMovie = FavMovieModel(id)
+    fun insertFavMovie(id: Int, title: String) {
+        val favMovie = FavMovieModel(movieID = id, title = title)
         favDAO.insertFavID(favMovie)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -97,9 +97,8 @@ class Repository @Inject constructor(
             })
     }
 
-    fun deleteFavMovie(id: Int) {
-        val favMovie = FavMovieModel(id)
-        favDAO.deleteFavID(favMovie)
+    fun deleteFavMovie(movieid: Int) {
+        favDAO.deleteFavID(movieid)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe()

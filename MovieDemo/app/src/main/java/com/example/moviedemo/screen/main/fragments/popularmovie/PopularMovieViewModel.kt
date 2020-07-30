@@ -23,7 +23,7 @@ class PopularMovieViewModel @Inject constructor(val repository: Repository) : Vi
 
     }
 
-    fun setFavouriteMovie(id: Int) {
-        repository.insertFavMovie(id)
+    fun setFavouriteMovie(id: Int, title: String) {
+        repository.insertFavMovie(id, title)
     }
 }

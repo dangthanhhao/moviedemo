@@ -93,8 +93,8 @@ class PopularMovieFragment : BaseFragment() {
                         name
                     )
                 )
-            }, favEvent = ClickListener { movie, _ ->
-                viewModel.setFavouriteMovie(movie)
+            }, favEvent = ClickListener { movie, name ->
+                viewModel.setFavouriteMovie(movie, name)
             }, listFav = viewModel.listFav)
 
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)

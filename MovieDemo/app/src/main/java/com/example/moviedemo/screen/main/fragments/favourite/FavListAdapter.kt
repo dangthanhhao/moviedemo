@@ -65,4 +65,6 @@ class FavListAdapter(val viewmodel: FavViewModel, val favEvent: ClickListener?) 
 
 
     }
+
+
 }

@@ -11,20 +11,39 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
+        android:background="#6A6A6A"
         tools:context=".screen.main.fragments.favourite.FavFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listFav"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+
+            android:background="#FFFFFF"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView"
             tools:listitem="@layout/list_popular_movie_item" />
+
+        <SearchView
+
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_edit_text"
+            android:iconifiedByDefault="true"
+            android:layoutDirection="ltr"
+            android:queryHint="Search favourite moives"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
