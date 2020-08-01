@@ -2,16 +2,16 @@ package com.example.moviedemo.screen.main.fragments.reminder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.example.moviedemo.databinding.ListReminderItemBinding
 import com.example.moviedemo.repository.local.ReminderMovieModel
+import com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener
 import java.text.SimpleDateFormat
 
-class ReminderAdapter :
+class ReminderAdapter(val navEvent: ClickListener, val deleteEvent:ClickListener) :
     ListAdapter<ReminderMovieModel, ReminderAdapter.ReminderViewHolder>(reminderDiffCallBack) {
     val viewBinderHelper = ViewBinderHelper()
 
@@ -23,14 +23,15 @@ class ReminderAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             reminder: ReminderMovieModel,
-            viewBinderHelper: ViewBinderHelper
+            viewBinderHelper: ViewBinderHelper,
+            navEvent: ClickListener,
+            deleteEvent: ClickListener
         ) {
 
             binding.reminder = reminder
-            binding.reminderDatetime.text =
-                SimpleDateFormat("yyyy-MM-dd hh:mm").format(reminder.reminderDate)
-            binding.reminderTitle.text =
-                "${reminder.title} - ${reminder.releaseDate.substring(reminder.releaseDate.length - 4)} - ${reminder.rating}/10"
+            binding.onNavigate=navEvent
+            binding.reminderDatetime.text = SimpleDateFormat("yyyy-MM-dd HH:mm").format(reminder.reminderDate)
+            binding.reminderTitle.text = "${reminder.title} - ${reminder.releaseDate.substring(0,4)} - ${reminder.rating}/10"
             binding.imageShowSwipe.setOnClickListener {
                 if (binding.swipeLayout.isClosed) {
                     viewBinderHelper.openLayout(reminder.movieID.toString())
@@ -38,13 +39,8 @@ class ReminderAdapter :
                     viewBinderHelper.closeLayout(reminder.movieID.toString())
                 }
             }
-            binding.deleteReminder.setOnClickListener {
-                Toast.makeText(
-                    binding.root.context,
-                    "Delete ${reminder.movieID}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            binding.onDelete=deleteEvent
+
         }
     }
 
@@ -74,7 +70,7 @@ class ReminderAdapter :
     override fun onBindViewHolder(holder: ReminderViewHolder, position: Int) {
         viewBinderHelper.bind(holder.binding.swipeLayout, getItem(position).movieID.toString())
 
-        holder.bind(getItem(position), viewBinderHelper)
+        holder.bind(getItem(position), viewBinderHelper, navEvent,deleteEvent)
     }
 
 }

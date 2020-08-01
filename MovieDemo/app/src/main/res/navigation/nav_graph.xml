@@ -30,7 +30,12 @@
         tools:layout="@layout/fragment_setting">
         <action
             android:id="@+id/action_settingFragment_to_reminderFragment"
-            app:destination="@id/reminderFragment" />
+            app:destination="@id/reminderFragment"
+            
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/favFragment"
@@ -61,5 +66,14 @@
         android:id="@+id/reminderFragment"
         android:name="com.example.moviedemo.screen.main.fragments.reminder.ReminderFragment"
         android:label="All Reminders"
-        tools:layout="@layout/fragment_reminder" />
+        tools:layout="@layout/fragment_reminder" >
+        <action
+            android:id="@+id/action_reminderFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment"
+
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
 </navigation>

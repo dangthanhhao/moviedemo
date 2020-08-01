@@ -93,11 +93,11 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("CheckResult")
     private fun test() {
-        repository.insertReminder(ReminderMovieModel(movieID = 4))
-        repository.insertReminder(ReminderMovieModel(movieID = 2))
-        repository.insertReminder(ReminderMovieModel(movieID = 5))
-
-        repository.insertReminder(ReminderMovieModel(movieID = 6))
+//        repository.insertReminder(ReminderMovieModel(movieID = 4))
+//        repository.insertReminder(ReminderMovieModel(movieID = 2))
+//        repository.insertReminder(ReminderMovieModel(movieID = 5))
+//
+//        repository.insertReminder(ReminderMovieModel(movieID = 6))
 
 
 //

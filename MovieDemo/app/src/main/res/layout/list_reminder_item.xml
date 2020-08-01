@@ -7,6 +7,12 @@
         <variable
             name="reminder"
             type="com.example.moviedemo.repository.local.ReminderMovieModel" />
+        <variable
+            name="onNavigate"
+            type="com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener" />
+        <variable
+            name="onDelete"
+            type="com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener" />
     </data>
 
     <com.chauthai.swipereveallayout.SwipeRevealLayout
@@ -28,7 +34,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Delete"
-                app:backgroundTint="@android:color/holo_red_dark" />
+                app:backgroundTint="@android:color/holo_red_dark"
+                android:onClick="@{()->onDelete.onCLick(reminder.movieID,reminder.title)}"
+                />
 
 
         </FrameLayout>
@@ -40,7 +48,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="133dp">
+                android:layout_height="133dp"
+                android:onClick="@{()->onNavigate.onCLick(reminder.movieID,reminder.title)}"
+                >
 
                 <ImageView
                     android:id="@+id/imageView5"

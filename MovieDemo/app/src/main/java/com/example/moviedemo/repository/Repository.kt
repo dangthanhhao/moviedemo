@@ -10,6 +10,7 @@ import com.example.moviedemo.repository.network.Movie
 import com.example.moviedemo.repository.network.MovieApi
 import com.example.moviedemo.repository.network.PopularMoviesResponse
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -112,19 +113,32 @@ class Repository @Inject constructor(
 
     }
 
-    fun insertReminder(reminder: ReminderMovieModel) {
+    fun insertOrUpdateReminder(reminder: ReminderMovieModel) {
         reminderDAO.insert(reminder).observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io()).subscribe()
+            .subscribeOn(Schedulers.io()).subscribe({},{
+                Timber.i("insert repostory got reminder ${reminder.reminderDate}")
+                if (it is SQLiteConstraintException){
+                    Timber.i("Duplicated reminder movieDID, Go update!")
+
+                    updateReminder(reminder)
+                }
+            })
     }
 
-    fun deleteReminder(reminder: ReminderMovieModel) {
-        reminderDAO.delete(reminder).observeOn(AndroidSchedulers.mainThread())
+    fun deleteReminder(movieid: Int) {
+        reminderDAO.delete(movieid).observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe()
     }
 
     fun updateReminder(reminder: ReminderMovieModel) {
+
         reminderDAO.update(reminder).observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe()
+    }
+    fun getReminder(movieID:Int):LiveData<ReminderMovieModel>{
+        return LiveDataReactiveStreams.fromPublisher(
+        reminderDAO.getReminder(movieID).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()))
     }
 
 }
