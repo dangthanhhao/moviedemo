@@ -21,15 +21,14 @@ import javax.inject.Singleton
 
 @Singleton
 class Repository @Inject constructor(
-    val userDAO: UserDao,
+    val userDAO: UserDAO,
     val movieApi: MovieApi,
-    val favDAO: FavDAO
+    val favDAO: FavDAO,
+    val reminderDAO: ReminderDAO
 ) {
-
 
     fun getUserProfile(): LiveData<UserModel> {
         //An action check if current user is created in DB. If not, create (insert) a row and then return the row (current user)
-
         val action = userDAO.checkCurrentUser().doOnError({ it.printStackTrace() })
             .switchIfEmpty(Maybe.just(UserModel())).flatMapCompletable {
 //                Timber.i("Current user ${it.toString()}")
@@ -102,6 +101,30 @@ class Repository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe()
+    }
+
+    //    reminders
+    fun getAllReminders(): LiveData<List<ReminderMovieModel>> {
+        return LiveDataReactiveStreams.fromPublisher(
+            reminderDAO.getAll().observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+        )
+
+    }
+
+    fun insertReminder(reminder: ReminderMovieModel) {
+        reminderDAO.insert(reminder).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe()
+    }
+
+    fun deleteReminder(reminder: ReminderMovieModel) {
+        reminderDAO.delete(reminder).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe()
+    }
+
+    fun updateReminder(reminder: ReminderMovieModel) {
+        reminderDAO.update(reminder).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe()
     }
 
 }

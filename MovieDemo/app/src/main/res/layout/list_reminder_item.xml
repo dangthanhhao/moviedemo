@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="reminder"
+            type="com.example.moviedemo.repository.local.ReminderMovieModel" />
+    </data>
+
+    <com.chauthai.swipereveallayout.SwipeRevealLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:dragEdge="right"
+        app:mode="same_level"
+
+        >
+
+        <!-- Your secondary layout here -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="133dp">
+
+            <Button
+                android:id="@+id/delete_reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Delete"
+                app:backgroundTint="@android:color/holo_red_dark" />
+
+
+        </FrameLayout>
+
+        <!-- Your main layout here -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="133dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="133dp">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    imgURL="@{reminder.imgURL}"
+                    android:layout_width="106dp"
+                    android:layout_height="117dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/defaultmovie" />
+
+                <ImageView
+                    android:id="@+id/image_show_swipe"
+                    android:layout_width="30dp"
+                    android:layout_height="46dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageView5"
+                    app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+                <TextView
+                    android:id="@+id/reminder_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="The Dark Tower - 2017 - 7.3/10"
+                    android:textColor="@color/design_default_color_on_secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@+id/reminder_datetime"
+                    app:layout_constraintEnd_toStartOf="@+id/image_show_swipe"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+                <TextView
+                    android:id="@+id/reminder_datetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2017-09-03 10:06"
+                    android:textColor="@color/design_default_color_on_secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                    app:layout_constraintStart_toStartOf="@+id/reminder_title"
+                    app:layout_constraintTop_toBottomOf="@+id/reminder_title" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+
+    </com.chauthai.swipereveallayout.SwipeRevealLayout>
+
+</layout>

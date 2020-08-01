@@ -17,17 +17,19 @@ class Converters {
     fun dateToTimestamp(date: Date?): Long? {
         return date?.time?.toLong()
     }
+
 }
 
 @androidx.room.Database(
-    entities = [UserModel::class, FavMovieModel::class],
+    entities = [UserModel::class, FavMovieModel::class, ReminderMovieModel::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class Database : RoomDatabase(){
-    abstract val UserDao: UserDao
+    abstract val UserDAO: UserDAO
     abstract val FavDAO: FavDAO
+    abstract val ReminderDAO: ReminderDAO
 //Singleton
     companion object{
         private var INSTANCE:Database?= null

@@ -29,7 +29,7 @@ fun bindAvatarProfile(imageView: ImageView, path: String?) {
 }
 @BindingAdapter("imgURL")
 fun bindImagePoster(imgView: ImageView, imgURL: String?) {
-
+    if (imgURL.isNullOrEmpty()) return
     imgURL?.let {
         val url =Repository.getUrLImage(imgURL)
         Log.d("Binding image got", url)

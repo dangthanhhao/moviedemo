@@ -7,6 +7,7 @@ import com.example.moviedemo.screen.UserProfileViewModel
 import com.example.moviedemo.screen.main.fragments.detail.MovieDetailViewModel
 import com.example.moviedemo.screen.main.fragments.favourite.FavViewModel
 import com.example.moviedemo.screen.main.fragments.popularmovie.PopularMovieViewModel
+import com.example.moviedemo.screen.main.fragments.reminder.ReminderViewModel
 import com.example.moviedemo.util.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -42,4 +43,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FavViewModel::class)
     abstract fun bindFavMovieVM(vm: FavViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReminderViewModel::class)
+    abstract fun bindReminder(vm: ReminderViewModel): ViewModel
 }

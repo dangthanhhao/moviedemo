@@ -16,10 +16,11 @@ import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseActivity
 import com.example.moviedemo.databinding.ActivityMainBinding
 import com.example.moviedemo.repository.Repository
+import com.example.moviedemo.repository.local.ReminderMovieModel
 import com.example.moviedemo.screen.UserProfileViewModel
+import com.example.moviedemo.screen.main.fragments.setting.SettingFragmentDirections
 import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.util.ReadFilePermisnion
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -64,6 +65,11 @@ class MainActivity : BaseActivity() {
             val t = Intent(this, ProfileActivity::class.java)
             startActivity(t)
         }
+        binding.buttonShowReminders.setOnClickListener {
+            navController.navigate(R.id.settingFragment)
+            navController.navigate(SettingFragmentDirections.actionSettingFragmentToReminderFragment())
+            binding.drawerLayout.closeDrawers()
+        }
 
         // Check and request permision for read write internal files
         ReadFilePermisnion.verifyStoragePermissions(this)
@@ -87,15 +93,19 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("CheckResult")
     private fun test() {
-//        repository.insertFavMovie(1)
-//        repository.insertFavMovie(2)
-//        repository.insertFavMovie(3)
+        repository.insertReminder(ReminderMovieModel(movieID = 4))
+        repository.insertReminder(ReminderMovieModel(movieID = 2))
+        repository.insertReminder(ReminderMovieModel(movieID = 5))
 
-//        repository.deleteFavMovie(2)
-        val listmovies = repository.getFavMovies()
-        listmovies.observe(this, Observer {
-            Timber.i("Test: ${it.toString()}")
-        })
+        repository.insertReminder(ReminderMovieModel(movieID = 6))
+
+
+//
+//
+//        val listmovies = repository.getAllReminders()
+//        listmovies.observe(this, Observer {
+//            Timber.i("Test reminder: ${it.toString()}")
+//        })
 
 
     }

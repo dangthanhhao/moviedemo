@@ -4,6 +4,7 @@ import com.example.moviedemo.screen.main.fragments.about.AboutFragment
 import com.example.moviedemo.screen.main.fragments.detail.MovieDetailFragment
 import com.example.moviedemo.screen.main.fragments.favourite.FavFragment
 import com.example.moviedemo.screen.main.fragments.popularmovie.PopularMovieFragment
+import com.example.moviedemo.screen.main.fragments.reminder.ReminderFragment
 import com.example.moviedemo.screen.main.fragments.setting.SettingFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -24,6 +25,9 @@ abstract class MainActivityBindingModule {
     abstract fun setting(): SettingFragment
 
     @ContributesAndroidInjector
-    abstract fun moviedetail():MovieDetailFragment
+    abstract fun moviedetail(): MovieDetailFragment
+
+    @ContributesAndroidInjector
+    abstract fun reminder(): ReminderFragment
 
 }
