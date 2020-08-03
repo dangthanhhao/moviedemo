@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application android:requestLegacyExternalStorage="true"
         android:name=".MovieDemoApplication"
         android:allowBackup="true"
@@ -23,7 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".util.NotifcationReciever"
+            android:enabled="true"
+            android:exported="true"
+            >
 
+        </receiver>
     </application>
 
 </manifest>

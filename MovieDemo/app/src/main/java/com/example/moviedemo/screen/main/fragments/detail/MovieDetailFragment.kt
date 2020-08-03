@@ -1,14 +1,18 @@
 package com.example.moviedemo.screen.main.fragments.detail
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
+
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +23,7 @@ import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentMovieDetailBinding
 import com.example.moviedemo.screen.main.MainActivity
+import com.example.moviedemo.util.NotificationSetter
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -101,7 +106,9 @@ class MovieDetailFragment : BaseFragment() {
 
         binding.buttonSetReminder.setOnClickListener {
             onShowDatePicker(it)
+
         }
+
 
         viewModel.reminder.observe(this, Observer {
             Timber.i("Current remider $it")
@@ -110,6 +117,7 @@ class MovieDetailFragment : BaseFragment() {
 
 
     }
+
 
     private fun initRecycleView(listActor: RecyclerView) {
 
@@ -138,6 +146,8 @@ class MovieDetailFragment : BaseFragment() {
                 val datePickString = SimpleDateFormat("yyyy-MM-dd").format(datePicked)
                 Timber.i("Date picked: $datePickString")
                 onShowTimePicker(datePicked)
+
+
             },
             year,
             month,
@@ -158,7 +168,10 @@ class MovieDetailFragment : BaseFragment() {
             Timber.i("TimePicked: $hourPicked , $minutePicked" )
             datePicked.hours=hourPicked
             datePicked.minutes=minutePicked
+
             viewModel.setReminder(datePicked)
+
+            NotificationSetter.setNotication(args.movieID,args.title,context!!,datePicked)
         },hour,minute,true)
         timePickerDialog.show()
 

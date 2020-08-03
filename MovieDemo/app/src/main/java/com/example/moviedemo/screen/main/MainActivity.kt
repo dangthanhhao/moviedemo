@@ -18,6 +18,7 @@ import com.example.moviedemo.databinding.ActivityMainBinding
 import com.example.moviedemo.repository.Repository
 import com.example.moviedemo.repository.local.ReminderMovieModel
 import com.example.moviedemo.screen.UserProfileViewModel
+import com.example.moviedemo.screen.main.fragments.popularmovie.PopularMovieFragmentDirections
 import com.example.moviedemo.screen.main.fragments.setting.SettingFragmentDirections
 import com.example.moviedemo.screen.profile.ProfileActivity
 import com.example.moviedemo.util.ReadFilePermisnion
@@ -86,11 +87,26 @@ class MainActivity : BaseActivity() {
 
         })
 
-
-
+        checkStartFromNotification()
         test()
     }
 
+    private fun checkStartFromNotification() {
+        intent.extras.let {
+            if(it!= null && it.getBoolean("startFromNotification",false)){
+                val movieid=it.getInt("movieid")
+                val title=it.getString("title")
+                navController.popBackStack(R.id.homeFragment,false)
+                navController.navigate(PopularMovieFragmentDirections.actionHomeFragmentToMovieDetailFragment(movieid,title!!))
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        checkStartFromNotification()
+    }
     @SuppressLint("CheckResult")
     private fun test() {
 //        repository.insertReminder(ReminderMovieModel(movieID = 4))
