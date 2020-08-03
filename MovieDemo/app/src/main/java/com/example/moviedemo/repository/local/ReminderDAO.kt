@@ -1,10 +1,11 @@
 package com.example.moviedemo.repository.local
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Maybe
-import io.reactivex.Single
 
 @Dao
 interface ReminderDAO {
@@ -21,5 +22,8 @@ interface ReminderDAO {
     fun update(reminder: ReminderMovieModel): Completable
 
     @Query("select * from remindermoviemodel where movieID=:movieid limit 1")
-    fun getReminder(movieid:Int):Flowable<ReminderMovieModel>
+    fun getReminder(movieid: Int): Flowable<ReminderMovieModel>
+
+    @Query("select * from remindermoviemodel order by reminderDate desc limit 2")
+    fun get2Recent(): Flowable<List<ReminderMovieModel>>
 }

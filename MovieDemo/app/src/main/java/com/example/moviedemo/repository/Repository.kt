@@ -10,7 +10,6 @@ import com.example.moviedemo.repository.network.Movie
 import com.example.moviedemo.repository.network.MovieApi
 import com.example.moviedemo.repository.network.PopularMoviesResponse
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -27,7 +26,7 @@ class Repository @Inject constructor(
     val favDAO: FavDAO,
     val reminderDAO: ReminderDAO
 ) {
-
+    //User repository
     fun getUserProfile(): LiveData<UserModel> {
         //An action check if current user is created in DB. If not, create (insert) a row and then return the row (current user)
         val action = userDAO.checkCurrentUser().doOnError({ it.printStackTrace() })
@@ -52,13 +51,13 @@ class Repository @Inject constructor(
             .subscribe()
     }
 
-    fun getPopularMovie(page:Int=1): Observable<PopularMoviesResponse> {
+    fun getPopularMovie(page: Int = 1): Observable<PopularMoviesResponse> {
         return movieApi.getPopularMovies(page = page)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
     }
 
-
+    //Favourite and movie repository
     companion object {
         fun getUrLImage(relativeURL: String?): String {
             if (relativeURL.isNullOrEmpty()) return ""
@@ -66,13 +65,11 @@ class Repository @Inject constructor(
         }
     }
 
-
     fun getMovieDetail(id: Int): Observable<Movie> {
         return movieApi.getMovieDetail(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
     }
-
 
     fun getFavMovies(): LiveData<List<FavMovieModel>> {
         return LiveDataReactiveStreams.fromPublisher(
@@ -97,7 +94,7 @@ class Repository @Inject constructor(
             })
     }
 
-    fun deleteFavMovie(movieid: Int) {
+    private fun deleteFavMovie(movieid: Int) {
         favDAO.deleteFavID(movieid)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -113,11 +110,18 @@ class Repository @Inject constructor(
 
     }
 
+    fun get2RecentReminders(): LiveData<List<ReminderMovieModel>> {
+        return LiveDataReactiveStreams.fromPublisher(
+            reminderDAO.get2Recent().observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+        )
+    }
+
     fun insertOrUpdateReminder(reminder: ReminderMovieModel) {
         reminderDAO.insert(reminder).observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io()).subscribe({},{
+            .subscribeOn(Schedulers.io()).subscribe({}, {
                 Timber.i("insert repostory got reminder ${reminder.reminderDate}")
-                if (it is SQLiteConstraintException){
+                if (it is SQLiteConstraintException) {
                     Timber.i("Duplicated reminder movieDID, Go update!")
 
                     updateReminder(reminder)
@@ -130,15 +134,17 @@ class Repository @Inject constructor(
             .subscribeOn(Schedulers.io()).subscribe()
     }
 
-    fun updateReminder(reminder: ReminderMovieModel) {
+    private fun updateReminder(reminder: ReminderMovieModel) {
 
         reminderDAO.update(reminder).observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io()).subscribe()
     }
-    fun getReminder(movieID:Int):LiveData<ReminderMovieModel>{
+
+    fun getReminder(movieID: Int): LiveData<ReminderMovieModel> {
         return LiveDataReactiveStreams.fromPublisher(
-        reminderDAO.getReminder(movieID).observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io()))
+            reminderDAO.getReminder(movieID).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+        )
     }
 
 }

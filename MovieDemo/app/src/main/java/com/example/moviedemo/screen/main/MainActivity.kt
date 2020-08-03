@@ -16,7 +16,6 @@ import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseActivity
 import com.example.moviedemo.databinding.ActivityMainBinding
 import com.example.moviedemo.repository.Repository
-import com.example.moviedemo.repository.local.ReminderMovieModel
 import com.example.moviedemo.screen.UserProfileViewModel
 import com.example.moviedemo.screen.main.fragments.popularmovie.PopularMovieFragmentDirections
 import com.example.moviedemo.screen.main.fragments.setting.SettingFragmentDirections
@@ -29,6 +28,7 @@ class MainActivity : BaseActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var navController: NavController
+    lateinit var binding: ActivityMainBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -39,7 +39,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         //init viewmodel, binding
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
+        binding = DataBindingUtil.setContentView<ActivityMainBinding>(
             this,
             R.layout.activity_main
         )
@@ -52,13 +52,9 @@ class MainActivity : BaseActivity() {
         drawerLayout = binding.drawerLayout
         setSupportActionBar(binding.toolbar)
         navController = findNavController(R.id.myNavHostFragment)
-//       appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         appBarConfiguration = AppBarConfiguration(binding.bottomNav.menu, drawerLayout)
-//        appBarConfiguration= AppBarConfiguration(setOf(R.id.homeFragment,R.id.favFragment),drawerLayout)
-        binding.bottomNav.setupWithNavController(navController)
 
-//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-//        NavigationUI.setupWithNavController(binding.navView, navController)
+        binding.bottomNav.setupWithNavController(navController)
         binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
         //set click listener on Edit profile button drawer
@@ -86,18 +82,32 @@ class MainActivity : BaseActivity() {
             }
 
         })
-
+        //get the 2 reminders for drawer
+        setupRemindersDrawer()
         checkStartFromNotification()
         test()
     }
 
+    private fun setupRemindersDrawer() {
+        val adapter = ReminderDrawerAdapter()
+        binding.listReminderDrawer.adapter = adapter
+        viewModel.list2RecentReminders.observe(this, Observer {
+            adapter.submitList(it)
+        })
+    }
+
     private fun checkStartFromNotification() {
         intent.extras.let {
-            if(it!= null && it.getBoolean("startFromNotification",false)){
-                val movieid=it.getInt("movieid")
-                val title=it.getString("title")
-                navController.popBackStack(R.id.homeFragment,false)
-                navController.navigate(PopularMovieFragmentDirections.actionHomeFragmentToMovieDetailFragment(movieid,title!!))
+            if (it != null && it.getBoolean("startFromNotification", false)) {
+                val movieid = it.getInt("movieid")
+                val title = it.getString("title")
+                navController.popBackStack(R.id.homeFragment, false)
+                navController.navigate(
+                    PopularMovieFragmentDirections.actionHomeFragmentToMovieDetailFragment(
+                        movieid,
+                        title!!
+                    )
+                )
             }
         }
     }
@@ -129,7 +139,7 @@ class MainActivity : BaseActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.myNavHostFragment)
-        return navController.navigateUp(appBarConfiguration);
+        return navController.navigateUp(appBarConfiguration)
     }
 
     //bottom nav

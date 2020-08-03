@@ -2,6 +2,7 @@ package com.example.moviedemo.screen.main.fragments.popularmovie
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -30,10 +31,6 @@ class PopularMovieFragment : BaseFragment() {
 
     //fix auto scroll when  first time called
     private var recycleListChangeCount = 4
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putSerializable(RECYCLE_VIEW_TYPE, recycleViewType)
@@ -57,7 +54,7 @@ class PopularMovieFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater?.inflate(R.menu.filtermenu, menu)
+        inflater.inflate(R.menu.filtermenu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -103,6 +100,7 @@ class PopularMovieFragment : BaseFragment() {
                     setMessage("Are you sure to favour/unfavoured this movie?")
                     setPositiveButton("Sure") { dialogInterface, i ->
                         viewModel.setFavouriteMovie(movie, name)
+                        Toast.makeText(context, "Marked as favourite", Toast.LENGTH_SHORT).show()
                     }
                     setNegativeButton("Cancel", { dialogInterface, i -> })
                     show()

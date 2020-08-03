@@ -1,18 +1,13 @@
 package com.example.moviedemo.screen.main.fragments.detail
 
-import android.app.*
-import android.content.Context
-import android.content.Intent
-import android.os.Build
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.NotificationCompat
-
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +18,6 @@ import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentMovieDetailBinding
 import com.example.moviedemo.screen.main.MainActivity
-import com.example.moviedemo.util.NotificationSetter
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,16 +35,11 @@ class MovieDetailFragment : BaseFragment() {
     private val args: MovieDetailFragmentArgs by navArgs()
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Toast.makeText(context, "${args.movieID.toString()}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "${args.movieID}", Toast.LENGTH_SHORT).show()
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_movie_detail,container,false)
         viewModel=ViewModelProviders.of(this,factory).get(MovieDetailViewModel::class.java)
         viewModel.isLoading.value=true
@@ -92,6 +81,7 @@ class MovieDetailFragment : BaseFragment() {
                 setMessage("Are you sure to favour/unfavoured this movie?")
                 setPositiveButton("Sure") { dialogInterface, i ->
                     viewModel.setFavouriteMovie(args.movieID, args.title)
+                    Toast.makeText(context, "Marked as favourite", Toast.LENGTH_SHORT).show()
 //                    (activity as MainActivity).onBackPressed()
                 }
                 setNegativeButton("Cancel", { dialogInterface, i -> })
@@ -165,13 +155,14 @@ class MovieDetailFragment : BaseFragment() {
         val minute=initDate.minutes
 
         val timePickerDialog=TimePickerDialog(context!!,TimePickerDialog.OnTimeSetListener { timePicker, hourPicked, minutePicked ->
-            Timber.i("TimePicked: $hourPicked , $minutePicked" )
-            datePicked.hours=hourPicked
-            datePicked.minutes=minutePicked
+            Timber.i("TimePicked: $hourPicked , $minutePicked")
+            datePicked.hours = hourPicked
+            datePicked.minutes = minutePicked
 
             viewModel.setReminder(datePicked)
 
-            NotificationSetter.setNotication(args.movieID,args.title,context!!,datePicked)
+
+            Toast.makeText(context, "Reminder set up!", Toast.LENGTH_SHORT).show()
         },hour,minute,true)
         timePickerDialog.show()
 

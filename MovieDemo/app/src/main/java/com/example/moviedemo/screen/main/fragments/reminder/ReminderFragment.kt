@@ -20,9 +20,6 @@ class ReminderFragment : BaseFragment() {
     lateinit var factory: ViewModelFactory
     lateinit var viewmodel: ReminderViewModel
     lateinit var binding: FragmentReminderBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,9 +28,14 @@ class ReminderFragment : BaseFragment() {
 
         viewmodel = ViewModelProviders.of(this, factory).get(ReminderViewModel::class.java)
 
-        val adapter = ReminderAdapter(navEvent = ClickListener{movie, name ->
-            findNavController().navigate(ReminderFragmentDirections.actionReminderFragmentToMovieDetailFragment(movie,name))
-        }, deleteEvent = ClickListener{movieID, _ ->
+        val adapter = ReminderAdapter(navEvent = ClickListener { movie, name ->
+            findNavController().navigate(
+                ReminderFragmentDirections.actionReminderFragmentToMovieDetailFragment(
+                    movie,
+                    name
+                )
+            )
+        }, deleteEvent = ClickListener { movieID, title ->
 
             val builder = AlertDialog.Builder(context!!)
             with(builder)
@@ -41,7 +43,8 @@ class ReminderFragment : BaseFragment() {
                 setTitle("Confirm delete")
                 setMessage("Are you sure to remove this remind?")
                 setPositiveButton("Remove") { dialogInterface, i ->
-                    viewmodel.deleteReminder(movieID)
+                    viewmodel.deleteReminder(movieID, title)
+
                 }
                 setNegativeButton("Cancel", { dialogInterface, i -> })
                 show()
