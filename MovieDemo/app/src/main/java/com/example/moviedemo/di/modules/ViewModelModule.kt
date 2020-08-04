@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviedemo.di.util.ViewModelKey
 import com.example.moviedemo.screen.UserProfileViewModel
+import com.example.moviedemo.screen.main.fragments.about.AboutViewModel
 import com.example.moviedemo.screen.main.fragments.detail.MovieDetailViewModel
 import com.example.moviedemo.screen.main.fragments.favourite.FavViewModel
 import com.example.moviedemo.screen.main.fragments.popularmovie.PopularMovieViewModel
@@ -48,4 +49,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ReminderViewModel::class)
     abstract fun bindReminder(vm: ReminderViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AboutViewModel::class)
+    abstract fun bindAbout(vm: AboutViewModel): ViewModel
 }
