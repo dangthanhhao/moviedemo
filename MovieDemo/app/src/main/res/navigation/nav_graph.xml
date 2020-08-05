@@ -27,7 +27,7 @@
         android:id="@+id/settingFragment"
         android:name="com.example.moviedemo.screen.main.fragments.setting.SettingFragment"
         android:label="Setting"
-        tools:layout="@layout/fragment_setting">
+        >
         <action
             android:id="@+id/action_settingFragment_to_reminderFragment"
             app:destination="@id/reminderFragment"

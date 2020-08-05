@@ -94,7 +94,8 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
     //swipe
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
-
+    //seting preferences
+    implementation 'androidx.preference:preference:1.1.1'
 }
 
 gradle.projectsEvaluated {

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:allowDividerAbove="true">
+    <PreferenceCategory android:title="Filter">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="popular_movies"
+
+            android:title="Popular Movies"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="top_rates_movies"
+            android:title="Top Rates Movies"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="upcoming_movies"
+            android:title="Upcoming Movies" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="now_playing_movies"
+            android:title="NowPlaying Movies"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="true" />
+        <SeekBarPreference
+            android:title="Movies with rate from"
+            android:key="rate_filter"
+            app:allowDividerAbove="false"
+            app:allowDividerBelow="false"
+            app:showSeekBarValue="true" />
+        <com.example.moviedemo.screen.main.fragments.setting.YearPickerDialogPreference
+            android:title="From Release Year:"
+            android:key="year_filter"
+            app:defaultValue="2020">
+
+        </com.example.moviedemo.screen.main.fragments.setting.YearPickerDialogPreference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Sort By">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="release_date_sorter"
+            android:title="Relases Date" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="rating_sorter"
+            android:title="Rating" />
+    </PreferenceCategory>
+</PreferenceScreen>
