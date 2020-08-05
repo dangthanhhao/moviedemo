@@ -2,7 +2,6 @@ package com.example.moviedemo.screen.main.fragments.favourite
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView.OnQueryTextListener
@@ -15,19 +14,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentFavBinding
 import com.example.moviedemo.screen.main.fragments.popularmovie.ClickListener
-import timber.log.Timber
 import javax.inject.Inject
 
 class FavFragment : BaseFragment() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-
+    lateinit var binding: FragmentFavBinding
     lateinit var viewmodel: FavViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +29,27 @@ class FavFragment : BaseFragment() {
     ): View? {
 
         viewmodel = ViewModelProviders.of(this, factory).get(FavViewModel::class.java)
-        val binding = FragmentFavBinding.inflate(inflater, container, false)
+        binding = FragmentFavBinding.inflate(inflater, container, false)
+
+        setupRecycleView()
+        setupSearchView()
+        setupSwipeToRefresh()
+        setHasOptionsMenu(false)
+        return binding.root
+    }
+
+    private fun setupSwipeToRefresh() {
+        binding.swipeRefreshFavourite.apply {
+            setOnRefreshListener {
+                binding.searchView.setQuery("", true)
+                isRefreshing = false
+            }
+        }
+    }
+
+    private fun setupRecycleView() {
         val adapter = FavListAdapter(viewmodel, favEvent = ClickListener { movie, title ->
-            val builder = AlertDialog.Builder(context!!)
+            val builder = AlertDialog.Builder(requireContext())
             with(builder)
             {
                 setTitle("Confirm Favourite")
@@ -58,8 +70,8 @@ class FavFragment : BaseFragment() {
         })
         binding.listFav.adapter = adapter
 
+        viewmodel.favIDs.observe(viewLifecycleOwner, Observer {
 
-        viewmodel.favIDs.observe(this, Observer {
             adapter.submitList(it)
         })
         //devide line
@@ -69,7 +81,9 @@ class FavFragment : BaseFragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
+    }
 
+    private fun setupSearchView() {
         binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
         }
@@ -77,26 +91,18 @@ class FavFragment : BaseFragment() {
 
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
+                viewmodel.filterKeyword = p0
+                viewmodel.filterList()
                 return false
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
-
                 viewmodel.filterKeyword = p0
                 viewmodel.filterList()
                 return false
             }
 
         })
-        setHasOptionsMenu(false)
-        return binding.root
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        Timber.i("Hit")
-
-        return super.onOptionsItemSelected(item)
     }
 
 

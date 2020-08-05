@@ -14,11 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedemo.R
 import com.example.moviedemo.base.BaseFragment
 import com.example.moviedemo.databinding.FragmentMovieBinding
+import com.example.moviedemo.repository.network.NetworkState
 import javax.inject.Inject
 
 const val RECYCLE_VIEW_TYPE = "recycle_type"
 const val RECYCLE_LIST_CHANGES = "recycle_changes"
 const val GRID_COLUMNS = 2
+
 class PopularMovieFragment : BaseFragment() {
 
     @Inject
@@ -37,7 +39,6 @@ class PopularMovieFragment : BaseFragment() {
         outState.putInt(RECYCLE_LIST_CHANGES, recycleListChangeCount)
         super.onSaveInstanceState(outState)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId != R.id.filter_menu) return super.onOptionsItemSelected(item)
@@ -62,27 +63,28 @@ class PopularMovieFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
 
         savedInstanceState?.getSerializable(RECYCLE_VIEW_TYPE)?.let {
             recycleViewType = it as RecycleViewType
         }
-
         savedInstanceState?.getInt(RECYCLE_LIST_CHANGES)?.let {
             recycleListChangeCount = it
         }
-
 
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(PopularMovieViewModel::class.java)
         binding = FragmentMovieBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
+
         setupRecycleView()
+
         return binding.root
     }
 
     private fun setupRecycleView() {
-
+//        prepare adapter
         val adapter =
             PopularMovieListAdapter(recycleViewType, navigateEvent = ClickListener { movie, name ->
                 findNavController().navigate(
@@ -92,7 +94,7 @@ class PopularMovieFragment : BaseFragment() {
                     )
                 )
             }, favEvent = ClickListener { movie, name ->
-                val builder = AlertDialog.Builder(context!!)
+                val builder = AlertDialog.Builder(requireContext())
 
                 with(builder)
                 {
@@ -108,11 +110,10 @@ class PopularMovieFragment : BaseFragment() {
 
 
             }, listFav = viewModel.listFav)
-
+//        devideline decoration
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        if (recycleViewType == RecycleViewType.GRID) {
 
-
+        if (recycleViewType == RecycleViewType.GRID) {      //grid recycle
             val gridLayoutManager = GridLayoutManager(context, GRID_COLUMNS)
             binding.listPopular.layoutManager = gridLayoutManager
             //remove devide line if has
@@ -130,20 +131,34 @@ class PopularMovieFragment : BaseFragment() {
 
             }
 
-        } else {
+        } else {        //list recycle
             binding.listPopular.addItemDecoration(aDevidedLine)
             binding.listPopular.layoutManager = LinearLayoutManager(context)
         }
 
         binding.listPopular.adapter = adapter
         binding.listPopular.setHasFixedSize(true)
-        viewModel.moviePagedList.observe(this, Observer {
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = true
+            viewModel.listFactory.popularDataSource.value?.invalidate()
+        }
+
+        viewModel.moviePagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-
-        viewModel.listFactory.networkState.observe(this, Observer {
+        //listen changes on viewmodel and update adapter
+        viewModel.listFactory.networkState.observe(viewLifecycleOwner, Observer {
             val listchanged = adapter.setNetworkState(it)
+
+            binding.swipeRefreshLayout.apply {
+                if (it == NetworkState.LOADED && isRefreshing) {
+                    isRefreshing = false
+                    binding.listPopular.scrollToPosition(0)
+                }
+
+            }
             if (recycleListChangeCount > 0 && listchanged && recycleViewType == RecycleViewType.LIST) {
                 binding.listPopular.scrollToPosition(0)
                 recycleListChangeCount--

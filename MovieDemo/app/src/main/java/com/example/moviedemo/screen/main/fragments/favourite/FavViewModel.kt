@@ -10,7 +10,7 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 class FavViewModel @Inject constructor(val repository: Repository) : ViewModel() {
-    val originalFavIDS = repository.getFavMovies()
+    var originalFavIDS = repository.getFavMovies()
     var favIDs = MutableLiveData<List<FavMovieModel>>()
 
     var filterKeyword: String? = ""
@@ -47,4 +47,5 @@ class FavViewModel @Inject constructor(val repository: Repository) : ViewModel()
         }
 
     }
+
 }

@@ -8,7 +8,7 @@ import com.example.moviedemo.repository.local.UserModel
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-
+//A ViewModel use for both activities: MainActivity and UserProfileActivity
 class UserProfileViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
     val userProfile: LiveData<UserModel> = repository.getUserProfile()

@@ -24,6 +24,7 @@ class AboutFragment : BaseFragment() {
         binding.webview.apply {
             webViewClient = MyWebViewClient(context)
             loadUrl(viewModel.BASE_URL)
+            settings.javaScriptEnabled = true
         }
         return binding.root
 
