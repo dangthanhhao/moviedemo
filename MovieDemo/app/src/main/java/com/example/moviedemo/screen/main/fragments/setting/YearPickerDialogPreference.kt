@@ -1,7 +1,6 @@
 package com.example.moviedemo.screen.main.fragments.setting
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.widget.TextView
 import androidx.preference.DialogPreference
@@ -15,10 +14,10 @@ class YearPickerDialogPreference(context: Context, attributes: AttributeSet) :
 
     init {
         widgetLayoutResource = R.layout.year_preference
-
+        dialogTitle = null
     }
 
-    private var mYear = 2020
+    var mYear = 2017 //default year
     fun getYear(): Int {
         return mYear
     }
@@ -28,23 +27,22 @@ class YearPickerDialogPreference(context: Context, attributes: AttributeSet) :
         if (this::txt_value.isInitialized)
             txt_value.text = year.toString()
         persistInt(year)
+
     }
 
-    override fun onGetDefaultValue(a: TypedArray, index: Int): Any? {
-        // Default value from attribute. Fallback value is set to 0.
-        return 2020
-    }
 
     override fun onSetInitialValue(
         restorePersistedValue: Boolean,
         defaultValue: Any?
     ) {
         // Read the value. Use the default value if it is not possible.
-        setYear(if (restorePersistedValue) getPersistedInt(mYear) else 2020)
+        setYear(if (restorePersistedValue) getPersistedInt(mYear) else defaultValue as Int)
     }
 
     override fun getDialogLayoutResource(): Int {
+        //layout for DialogPreFragCompat
         return R.layout.yearpickerdialog
+        // return super.getDialogLayoutResource()
     }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder?) {

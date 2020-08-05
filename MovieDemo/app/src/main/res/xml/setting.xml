@@ -35,7 +35,7 @@
         <com.example.moviedemo.screen.main.fragments.setting.YearPickerDialogPreference
             android:title="From Release Year:"
             android:key="year_filter"
-            app:defaultValue="2020">
+            android:defaultValue="2019">
 
         </com.example.moviedemo.screen.main.fragments.setting.YearPickerDialogPreference>
     </PreferenceCategory>

@@ -75,4 +75,5 @@ class SettingFragment : PreferenceFragmentCompat() {
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
+
 }

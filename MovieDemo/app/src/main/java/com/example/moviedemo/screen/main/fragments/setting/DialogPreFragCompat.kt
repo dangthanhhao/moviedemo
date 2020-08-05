@@ -8,7 +8,7 @@ import androidx.preference.PreferenceDialogFragmentCompat
 import com.example.moviedemo.R
 
 
-class DialogPrefFragCompat(val key: String, val year: Int) : PreferenceDialogFragmentCompat() {
+class DialogPrefFragCompat(val key: String, val initYear: Int) : PreferenceDialogFragmentCompat() {
 
     lateinit var yearpicker: NumberPicker
 
@@ -16,7 +16,6 @@ class DialogPrefFragCompat(val key: String, val year: Int) : PreferenceDialogFra
         val bundle = Bundle(1)
         bundle.putString(ARG_KEY, key)
         arguments = bundle
-
 
     }
 
@@ -27,17 +26,22 @@ class DialogPrefFragCompat(val key: String, val year: Int) : PreferenceDialogFra
                 targetRequestCode,
                 Activity.RESULT_OK,
                 requireActivity().intent.apply { putExtra("year", yearpicker.value) })
+
         }
     }
 
 
     override fun onBindDialogView(view: View?) {
+
         if (view != null) {
+
             yearpicker = view.findViewById<NumberPicker>(R.id.picker_year)
             yearpicker.minValue = 1998
             yearpicker.maxValue = 2020
-            yearpicker.value = year
+            yearpicker.value = initYear
             yearpicker.wrapSelectorWheel = false
+
+
         }
 
         super.onBindDialogView(view)
