@@ -1,6 +1,7 @@
 package com.example.moviedemo.screen.main.fragments.setting
 
 import android.app.Activity
+import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
@@ -17,6 +18,14 @@ class DialogPrefFragCompat(val key: String, val initYear: Int) : PreferenceDialo
         bundle.putString(ARG_KEY, key)
         arguments = bundle
 
+    }
+
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        retainInstance = true
+        if (this::yearpicker.isInitialized)
+            yearpicker.scrollBarSize = 0
+        return super.onCreateDialog(savedInstanceState)
     }
 
     override fun onDialogClosed(positiveResult: Boolean) {
