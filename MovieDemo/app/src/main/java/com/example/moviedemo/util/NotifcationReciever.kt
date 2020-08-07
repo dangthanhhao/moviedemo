@@ -53,7 +53,7 @@ class NotifcationReciever : BroadcastReceiver() {
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setVibrate(longArrayOf(1000, 2000, 1000))
                 .setChannelId("channelid")
                 .setContentIntent(contentIntent)
@@ -61,7 +61,7 @@ class NotifcationReciever : BroadcastReceiver() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val name = "My channel name"
                 val descriptionText = "Channel description"
-                val importance = NotificationManager.IMPORTANCE_DEFAULT
+                val importance = NotificationManager.IMPORTANCE_HIGH
                 val channel = NotificationChannel("channelid", name, importance).apply {
                     description = descriptionText
                 }
