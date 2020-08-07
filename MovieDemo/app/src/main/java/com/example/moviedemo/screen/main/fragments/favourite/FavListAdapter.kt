@@ -34,7 +34,7 @@ class FavListAdapter(
             viewmodel.getMovieDetail(item.movieID).subscribe({
                 binding.movie = it
 
-                binding.edittextRating.setText(it.vote_average.toString() + "/10")
+                binding.edittextRating.text = it.vote_average.toString() + "/10"
                 binding.favPopular.setImageResource(R.drawable.ic_star_black_24dp)
 
                 favEvent?.let {
@@ -61,19 +61,16 @@ class FavListAdapter(
 
     override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
         holder.bind(getItem(position), viewmodel, favEvent, navigateEvent)
-
     }
 
     object favDiffCallback : DiffUtil.ItemCallback<FavMovieModel>() {
         override fun areItemsTheSame(oldItem: FavMovieModel, newItem: FavMovieModel): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: FavMovieModel, newItem: FavMovieModel): Boolean {
             return oldItem.movieID == newItem.movieID
         }
 
-
+        override fun areContentsTheSame(oldItem: FavMovieModel, newItem: FavMovieModel): Boolean {
+            return oldItem == newItem
+        }
     }
 
 

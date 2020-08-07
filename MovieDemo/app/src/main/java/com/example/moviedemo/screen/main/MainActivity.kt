@@ -1,6 +1,5 @@
 package com.example.moviedemo.screen.main
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -48,6 +47,17 @@ class MainActivity : BaseActivity() {
             ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
         binding.viewModel = viewModel
 
+        setUpDrawerAndBottomNav()
+        // Check and request permision for read write internal files
+        ReadFilePermisnion.verifyStoragePermissions(this)
+
+        //get the 2 reminders for drawer
+        setupRemindersDrawer()
+        checkStartFromNotification()
+
+    }
+
+    private fun setUpDrawerAndBottomNav() {
         //set up Drawer and bottom nav
         drawerLayout = binding.drawerLayout
         setSupportActionBar(binding.toolbar)
@@ -67,9 +77,6 @@ class MainActivity : BaseActivity() {
             navController.navigate(SettingFragmentDirections.actionSettingFragmentToReminderFragment())
             binding.drawerLayout.closeDrawers()
         }
-
-        // Check and request permision for read write internal files
-        ReadFilePermisnion.verifyStoragePermissions(this)
         //setup badge on bottom nav
         viewModel.numFavs.observe(this, Observer {
 
@@ -82,10 +89,6 @@ class MainActivity : BaseActivity() {
             }
 
         })
-        //get the 2 reminders for drawer
-        setupRemindersDrawer()
-        checkStartFromNotification()
-        test()
     }
 
     private fun setupRemindersDrawer() {
@@ -117,24 +120,7 @@ class MainActivity : BaseActivity() {
         setIntent(intent)
         checkStartFromNotification()
     }
-    @SuppressLint("CheckResult")
-    private fun test() {
-//        repository.insertReminder(ReminderMovieModel(movieID = 4))
-//        repository.insertReminder(ReminderMovieModel(movieID = 2))
-//        repository.insertReminder(ReminderMovieModel(movieID = 5))
-//
-//        repository.insertReminder(ReminderMovieModel(movieID = 6))
 
-
-//
-//
-//        val listmovies = repository.getAllReminders()
-//        listmovies.observe(this, Observer {
-//            Timber.i("Test reminder: ${it.toString()}")
-//        })
-
-
-    }
 
 
     override fun onSupportNavigateUp(): Boolean {

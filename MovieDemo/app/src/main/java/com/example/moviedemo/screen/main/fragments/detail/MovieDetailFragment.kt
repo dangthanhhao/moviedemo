@@ -39,15 +39,15 @@ class MovieDetailFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Toast.makeText(context, "${args.movieID}", Toast.LENGTH_SHORT).show()
+
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_movie_detail,container,false)
         viewModel=ViewModelProviders.of(this,factory).get(MovieDetailViewModel::class.java)
         viewModel.isLoading.value=true
 
-        viewModel.isLoading.observe(this, Observer {
-            if(it==true){
-                binding.contrainItemLayout.visibility=View.GONE
-                binding.progressBar3.visibility=View.VISIBLE
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                binding.contrainItemLayout.visibility = View.GONE
+                binding.progressBar3.visibility = View.VISIBLE
             } else {
                 binding.contrainItemLayout.visibility = View.VISIBLE
                 binding.progressBar3.visibility = View.GONE
@@ -57,7 +57,18 @@ class MovieDetailFragment : BaseFragment() {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
 
-        //set up fav icon
+        initFavouriteIcon()
+        initRecycleView(binding.listActor)
+        viewModel.initReminder(args.movieID)
+
+        binding.buttonSetReminder.setOnClickListener {
+            onShowDatePicker(it)
+        }
+
+        return binding.root
+    }
+
+    private fun initFavouriteIcon() {
         (activity as MainActivity).viewModel.listFavs.observe(binding.lifecycleOwner!!, Observer {
             var isFav = false
             for (item in it) {
@@ -73,7 +84,7 @@ class MovieDetailFragment : BaseFragment() {
         })
 
         binding.favicon.setOnClickListener {
-            val builder = AlertDialog.Builder(context!!)
+            val builder = AlertDialog.Builder(requireContext())
 
             with(builder)
             {
@@ -81,31 +92,13 @@ class MovieDetailFragment : BaseFragment() {
                 setMessage("Are you sure to favour/unfavoured this movie?")
                 setPositiveButton("Sure") { dialogInterface, i ->
                     viewModel.setFavouriteMovie(args.movieID, args.title)
-                    Toast.makeText(context, "Marked as favourite", Toast.LENGTH_SHORT).show()
-//                    (activity as MainActivity).onBackPressed()
+                    Toast.makeText(context, "Favourite setup", Toast.LENGTH_SHORT).show()
+                    //                    (activity as MainActivity).onBackPressed()
                 }
                 setNegativeButton("Cancel", { dialogInterface, i -> })
                 show()
             }
         }
-
-
-        // Inflate the layout for this fragment
-        initRecycleView(binding.listActor)
-        viewModel.initReminder(args.movieID)
-
-        binding.buttonSetReminder.setOnClickListener {
-            onShowDatePicker(it)
-
-        }
-
-
-        viewModel.reminder.observe(this, Observer {
-            Timber.i("Current remider $it")
-        })
-        return binding.root
-
-
     }
 
 
@@ -130,7 +123,7 @@ class MovieDetailFragment : BaseFragment() {
         val day = initDate.date
 
         val dpd = DatePickerDialog(
-            context!!,
+            requireContext(),
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val datePicked = Date(year - 1900, monthOfYear, dayOfMonth)
                 val datePickString = SimpleDateFormat("yyyy-MM-dd").format(datePicked)
@@ -146,7 +139,6 @@ class MovieDetailFragment : BaseFragment() {
 
         dpd.show()
 
-
     }
 
     private fun onShowTimePicker(datePicked: Date) {
@@ -154,16 +146,19 @@ class MovieDetailFragment : BaseFragment() {
         val hour=initDate.hours
         val minute=initDate.minutes
 
-        val timePickerDialog=TimePickerDialog(context!!,TimePickerDialog.OnTimeSetListener { timePicker, hourPicked, minutePicked ->
-            Timber.i("TimePicked: $hourPicked , $minutePicked")
-            datePicked.hours = hourPicked
-            datePicked.minutes = minutePicked
-
-            viewModel.setReminder(datePicked)
-
-
-            Toast.makeText(context, "Reminder set up!", Toast.LENGTH_SHORT).show()
-        },hour,minute,true)
+        val timePickerDialog = TimePickerDialog(
+            requireContext(),
+            TimePickerDialog.OnTimeSetListener { timePicker, hourPicked, minutePicked ->
+                Timber.i("TimePicked: $hourPicked , $minutePicked")
+                datePicked.hours = hourPicked
+                datePicked.minutes = minutePicked
+                viewModel.setReminder(datePicked)
+                Toast.makeText(context, "Reminder set up!", Toast.LENGTH_SHORT).show()
+            },
+            hour,
+            minute,
+            true
+        )
         timePickerDialog.show()
 
     }

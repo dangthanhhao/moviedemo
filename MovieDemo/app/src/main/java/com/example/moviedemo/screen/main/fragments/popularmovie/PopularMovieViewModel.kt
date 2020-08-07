@@ -9,7 +9,6 @@ import javax.inject.Inject
 class PopularMovieViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 //    val repository by lazy { Repository(Database.getInstance(application).UserDao, MovieApi.retrofitService) }
 
-
     val listFactory = PopularMovieDataSourceFactory(repository)
     val listFav = repository.getFavMovies()
     val config = PagedList.Config.Builder()
@@ -19,9 +18,6 @@ class PopularMovieViewModel @Inject constructor(val repository: Repository) : Vi
     val moviePagedList = LivePagedListBuilder(listFactory, config).build()
 
 
-    init {
-
-    }
 
     fun setFavouriteMovie(id: Int, title: String) {
         repository.insertFavMovie(id, title)

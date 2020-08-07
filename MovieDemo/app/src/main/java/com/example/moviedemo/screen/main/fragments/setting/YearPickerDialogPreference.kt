@@ -27,7 +27,6 @@ class YearPickerDialogPreference(context: Context, attributes: AttributeSet) :
         if (this::txt_value.isInitialized)
             txt_value.text = year.toString()
         persistInt(year)
-
     }
 
 

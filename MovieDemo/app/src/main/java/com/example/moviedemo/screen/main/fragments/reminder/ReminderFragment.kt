@@ -37,7 +37,7 @@ class ReminderFragment : BaseFragment() {
             )
         }, deleteEvent = ClickListener { movieID, title ->
 
-            val builder = AlertDialog.Builder(context!!)
+            val builder = AlertDialog.Builder(requireContext())
             with(builder)
             {
                 setTitle("Confirm delete")

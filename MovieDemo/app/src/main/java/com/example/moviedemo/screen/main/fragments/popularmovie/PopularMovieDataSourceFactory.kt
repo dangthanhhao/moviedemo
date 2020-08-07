@@ -1,5 +1,6 @@
 package com.example.moviedemo.screen.main.fragments.popularmovie
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
@@ -9,7 +10,7 @@ import com.example.moviedemo.repository.network.NetworkState
 
 class PopularMovieDataSourceFactory(val repository: Repository) : DataSource.Factory<Int, Movie>() {
     val popularDataSource = MutableLiveData<PopularMovieDataSource>()
-    val networkState =
+    val networkState: LiveData<NetworkState> =
         Transformations.switchMap<PopularMovieDataSource, NetworkState>(popularDataSource) {
             return@switchMap it.networkState
         }

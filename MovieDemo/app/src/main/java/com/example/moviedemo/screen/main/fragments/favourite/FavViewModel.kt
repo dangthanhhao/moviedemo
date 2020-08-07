@@ -45,7 +45,6 @@ class FavViewModel @Inject constructor(val repository: Repository) : ViewModel()
                 return@filter it.title.toLowerCase().contains(filterKeyword!!.toLowerCase())
             }
         }
-
     }
 
 }

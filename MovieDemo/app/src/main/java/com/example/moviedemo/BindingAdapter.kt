@@ -23,21 +23,20 @@ fun bindAvatarProfile(imageView: ImageView, path: String?) {
 
         }
 
-
     }
 
 }
 @BindingAdapter("imgURL")
 fun bindImagePoster(imgView: ImageView, imgURL: String?) {
     if (imgURL.isNullOrEmpty()) return
-    imgURL?.let {
-        val url =Repository.getUrLImage(imgURL)
+    imgURL.let {
+        val url = Repository.getUrLImage(imgURL)
         Log.d("Binding image got", url)
 
         val imgURi = imgURL.toUri().buildUpon().scheme("https").build()
         Glide.with(imgView.context).load(url).apply(
             RequestOptions()
-            .placeholder(R.drawable.loading_animation)
+                .placeholder(R.drawable.loading_animation)
 //            .error(R.drawable.ic_broken_image)
         ).into(imgView)
     }

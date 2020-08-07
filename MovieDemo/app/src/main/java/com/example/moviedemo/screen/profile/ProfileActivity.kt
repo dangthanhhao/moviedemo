@@ -40,13 +40,10 @@ class ProfileActivity : BaseActivity() {
         val binding =
             DataBindingUtil.setContentView<ActivityProfileBinding>(this, R.layout.activity_profile)
         binding.lifecycleOwner = this
-
-
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
 
         binding.viewModel = viewModel
-
 
         setUpRadioButton(binding.radioButton1, binding.radioButton2)
         binding.btnCancelUpdate.setOnClickListener { finish() }
@@ -54,7 +51,6 @@ class ProfileActivity : BaseActivity() {
         viewModel.userProfile.observe(this,
             androidx.lifecycle.Observer {
                 val imgFile = File(it.avatar)
-
                 if (imgFile.exists() && !imageBindFirstTime) {
                     binding.profileImage.setImageBitmap(BitmapFactory.decodeFile(imgFile.absolutePath))
                     imageBindFirstTime = true
@@ -130,13 +126,10 @@ class ProfileActivity : BaseActivity() {
             }
         }
 
-
-
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     fun onUpdateProfile(view: View) {
-
         viewModel.updateUserProfile(avatarPicked)
         finish()
     }

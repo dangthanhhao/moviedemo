@@ -23,19 +23,18 @@ class MovieDetailViewModel @Inject constructor(
     lateinit var reminder: LiveData<ReminderMovieModel>
 
 
-    val ratingString = Transformations.map(movie, {
+    val ratingString: LiveData<String> = Transformations.map(movie) {
         it.vote_average.toString() + "/10"
-    })
+    }
 
     fun initReminder(movieid: Int) {
-        reminder=repository.getReminder(movieid)
+        reminder = repository.getReminder(movieid)
     }
-    @SuppressLint("CheckResult")
 
+    @SuppressLint("CheckResult")
     fun getMovie(id: Int) {
         repository.getMovieDetail(id).subscribe({
             movie.value = it
-
             Timber.i("Loaded detail movie $it")
             isLoading.value = false
         }, {
@@ -46,6 +45,7 @@ class MovieDetailViewModel @Inject constructor(
     fun setFavouriteMovie(id: Int, title: String) {
         repository.insertFavMovie(id, title)
     }
+
     fun setReminder(reminderDate:Date){
         Timber.i("Viewmodel got reminder date $reminderDate")
         with(movie.value!!){

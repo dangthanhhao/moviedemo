@@ -69,9 +69,7 @@ class FavFragment : BaseFragment() {
             )
         })
         binding.listFav.adapter = adapter
-
         viewmodel.favIDs.observe(viewLifecycleOwner, Observer {
-
             adapter.submitList(it)
         })
         //devide line
@@ -88,14 +86,12 @@ class FavFragment : BaseFragment() {
             binding.searchView.isIconified = false
         }
 
-
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 viewmodel.filterKeyword = p0
                 viewmodel.filterList()
                 return false
             }
-
             override fun onQueryTextChange(p0: String?): Boolean {
                 viewmodel.filterKeyword = p0
                 viewmodel.filterList()

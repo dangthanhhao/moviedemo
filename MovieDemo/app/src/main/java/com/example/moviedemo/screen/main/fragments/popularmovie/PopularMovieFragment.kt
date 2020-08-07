@@ -102,7 +102,7 @@ class PopularMovieFragment : BaseFragment() {
                     setMessage("Are you sure to favour/unfavoured this movie?")
                     setPositiveButton("Sure") { dialogInterface, i ->
                         viewModel.setFavouriteMovie(movie, name)
-                        Toast.makeText(context, "Marked as favourite", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Favourite setup", Toast.LENGTH_SHORT).show()
                     }
                     setNegativeButton("Cancel", { dialogInterface, i -> })
                     show()
@@ -113,7 +113,7 @@ class PopularMovieFragment : BaseFragment() {
 //        devideline decoration
         val aDevidedLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 
-        if (recycleViewType == RecycleViewType.GRID) {      //grid recycle
+        if (recycleViewType == RecycleViewType.GRID) {      //grid recycle view
             val gridLayoutManager = GridLayoutManager(context, GRID_COLUMNS)
             binding.listPopular.layoutManager = gridLayoutManager
             //remove devide line if has
@@ -128,10 +128,8 @@ class PopularMovieFragment : BaseFragment() {
                         return GRID_COLUMNS
                     } else return 1
                 }
-
             }
-
-        } else {        //list recycle
+        } else {                                            //list recycle view
             binding.listPopular.addItemDecoration(aDevidedLine)
             binding.listPopular.layoutManager = LinearLayoutManager(context)
         }

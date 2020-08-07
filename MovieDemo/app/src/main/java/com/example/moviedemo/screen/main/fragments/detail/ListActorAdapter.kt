@@ -9,23 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviedemo.R
 
 class ListActorAdapter :ListAdapter<Int,ListActorAdapter.ActorViewHolder>(diffCallback){
-    object diffCallback: DiffUtil.ItemCallback<Int>() {
+    object diffCallback : DiffUtil.ItemCallback<Int>() {
         override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean {
-            return oldItem==newItem
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Int, newItem: Int): Boolean {
-            return oldItem==newItem
+            return oldItem == newItem
         }
 
     }
 
-    class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    }
+    // api not have, no bind data. Just show the layout
+    class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorViewHolder {
-        val view= LayoutInflater.from(parent.context).inflate(R.layout.list_actor_item,parent,false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.list_actor_item, parent, false)
         return ActorViewHolder(view)
     }
 
